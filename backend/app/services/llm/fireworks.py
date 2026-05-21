@@ -19,6 +19,12 @@ class FireworksLLMClient(BaseLLMClient):
             base_url=FIREWORKS_OPENAI_COMPATIBLE_BASE_URL,
         )
         self._model = settings.llm_model
+        self._max_tokens = settings.llm_max_tokens
+        self._temperature = settings.llm_temperature
+        self._top_p = settings.llm_top_p
+        self._top_k = settings.llm_top_k
+        self._presence_penalty = settings.llm_presence_penalty
+        self._frequency_penalty = settings.llm_frequency_penalty
 
     async def generate_structured_output(
         self,
@@ -35,7 +41,14 @@ class FireworksLLMClient(BaseLLMClient):
                     {"role": "user", "content": user_prompt},
                 ],
                 response_format={"type": "json_object"},
-                temperature=0.2,
+                max_tokens=self._max_tokens,
+                temperature=self._temperature,
+                top_p=self._top_p,
+                extra_body={
+                    "top_k": self._top_k,
+                    "presence_penalty": self._presence_penalty,
+                    "frequency_penalty": self._frequency_penalty,
+                },
             )
         except (APIError, OpenAIError) as exc:
             raise LLMClientError("LLM provider request failed.") from exc

@@ -55,9 +55,9 @@ Each decision should use:
 
 **Status:** Accepted
 **Context:** Sprint 0/1 requires an LLM integration that can later swap providers or models without rewriting app logic.
-**Decision:** Implement a vendor-agnostic LLM interface with Fireworks.ai as the first OpenAI-compatible provider.
-**Rationale:** Fireworks can be configured through `LLM_PROVIDER`, `LLM_MODEL`, and `FIREWORKS_API_KEY`, keeping model choice in environment variables.
-**Consequences:** P0 backend uses the Fireworks provider by default. Future OpenAI, Anthropic, or OpenRouter clients can be added behind the same interface.
+**Decision:** Implement a vendor-agnostic LLM interface with Fireworks.ai as the first OpenAI-compatible provider, using `accounts/fireworks/models/qwen3p6-plus` for P0.
+**Rationale:** Fireworks can be configured through `LLM_PROVIDER`, `LLM_MODEL`, `FIREWORKS_API_KEY`, and generation settings, keeping model choice in environment variables.
+**Consequences:** P0 backend uses Qwen 3.6 Plus via Fireworks by default. Future OpenAI, Anthropic, OpenRouter, or embedding clients can be added behind separate provider interfaces.
 
 ---
 
