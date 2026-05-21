@@ -1,0 +1,915 @@
+{
+  "version": "0.1.0",
+  "purpose": "Coach-only seed strategy bank for ReflectLoop Coach P0.",
+  "frameworks": {
+    "alexander_dialogic": {
+      "discourse_capacities": ["questioning", "building", "challenging", "hedging", "connecting"],
+      "uptake_moves": ["revoice", "probe", "redirect", "connect"],
+      "principles": ["collective", "reciprocal", "supportive", "cumulative", "purposeful"]
+    },
+    "look_fors": ["Response/Uptake", "Wait Time"],
+    "jim_knight_big_four": ["Checks for Understanding"],
+    "hits": ["Multiple Exposures"]
+  },
+  "pilot_focus_areas": [
+    "dialogic_teaching_for_english_oracy",
+    "vocabulary_practice_and_explicit_vocabulary_teaching",
+    "assessment_for_learning_diagnostic_checks",
+    "textbook_adaptation_for_underperforming_eal_learners"
+  ],
+  "strategies": [
+    {
+      "strategy_id": "dialogic_revoice_probe_wait",
+      "title": "Revoice, Pause, Probe",
+      "summary": "Teacher revoices a student contribution, waits, then probes for reasoning before moving on.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy", "assessment_for_learning_diagnostic_checks"],
+      "teacher_move": "Say, 'So you are saying ___. What makes you think that?' then wait silently for 3-5 seconds.",
+      "student_move": "Student clarifies reasoning or adds evidence.",
+      "coach_use_when": [
+        "Teacher acknowledges answers but moves on quickly.",
+        "Student responses are short or unsupported.",
+        "Observation notes show limited uptake."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "building"],
+        "uptake_moves": ["revoice", "probe"],
+        "principles": ["supportive", "cumulative", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher takes up a student idea and uses it as the basis for the next question.",
+        "wait_time": "Teacher allows 3-5 seconds after the probe before speaking again."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks whether the student can explain the reasoning behind the answer."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Emerging",
+        "exposure_pattern": "Students revisit the same idea through explanation rather than a second task."
+      },
+      "implementation_steps": [
+        "Select one key question in the lesson.",
+        "After the first student answer, revoice it neutrally.",
+        "Ask one reasoning probe.",
+        "Wait 3-5 seconds before inviting more detail."
+      ],
+      "cautions": [
+        "Do not revoice as correction.",
+        "Keep tone curious rather than evaluative."
+      ]
+    },
+    {
+      "strategy_id": "dialogic_redirect_peer_build",
+      "title": "Redirect for Peer Build",
+      "summary": "Teacher redirects a student idea to peers so the class builds on it collectively.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy"],
+      "teacher_move": "Ask, 'Who can build on or question that idea?' instead of confirming the answer immediately.",
+      "student_move": "Students respond to each other's ideas, not only to the teacher.",
+      "coach_use_when": [
+        "Discussion is teacher-student-teacher-student.",
+        "Few student-to-student links are observed.",
+        "Teacher wants more collective reasoning."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["building", "connecting", "challenging"],
+        "uptake_moves": ["redirect", "connect"],
+        "principles": ["collective", "reciprocal", "supportive"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher redirects a student response to another student and prompts connection or challenge.",
+        "wait_time": "Teacher waits after redirecting instead of filling the silence."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher listens for whether multiple students can extend, question, or restate the idea."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students encounter the concept again through peer explanation and comparison."
+      },
+      "implementation_steps": [
+        "Identify one discussion moment where students usually answer only the teacher.",
+        "After a student response, redirect it to the group.",
+        "Invite one peer to build and one peer to question or connect.",
+        "Summarize the class-built idea."
+      ],
+      "cautions": [
+        "Avoid forcing disagreement; allow building, questioning, or connecting.",
+        "Protect psychological safety by normalizing partial ideas."
+      ]
+    },
+    {
+      "strategy_id": "cfu_hinge_question_multiple_exposure",
+      "title": "Hinge Question Re-Exposure",
+      "summary": "Teacher uses a planned hinge question to decide whether students need another exposure to the concept.",
+      "focus_areas": ["assessment_for_learning_diagnostic_checks"],
+      "teacher_move": "Ask one diagnostic question that reveals the misconception, then choose a quick re-exposure task based on responses.",
+      "student_move": "Students answer individually and then revisit the idea through a second representation or example.",
+      "coach_use_when": [
+        "Teacher repeats explanations without checking understanding.",
+        "Misconceptions appear late in independent work.",
+        "Lesson pacing overrides evidence of understanding."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "connecting"],
+        "uptake_moves": ["probe", "connect"],
+        "principles": ["purposeful", "cumulative"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher uses student responses to decide the next instructional move.",
+        "wait_time": "Teacher gives students enough time to answer individually before discussion."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher uses a hinge question to gather evidence before moving forward."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students receive a second targeted exposure when evidence shows partial understanding."
+      },
+      "implementation_steps": [
+        "Write one hinge question before the lesson.",
+        "Decide what response pattern means 'move on' versus 're-expose'.",
+        "Ask students to answer individually.",
+        "Use responses to select a brief second example, model, or peer explanation."
+      ],
+      "cautions": [
+        "The hinge question should test understanding, not recall only.",
+        "Use wrong answers as instructional information, not failure evidence."
+      ]
+    },
+    {
+      "strategy_id": "wait_time_everyone_rehearses",
+      "title": "Wait Time with Everyone Rehearses",
+      "summary": "Teacher builds deliberate wait time by asking all students to rehearse an answer before discussion.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy", "assessment_for_learning_diagnostic_checks"],
+      "teacher_move": "Say, 'Take 20 seconds to think or jot. I will ask several people to share how they are thinking.'",
+      "student_move": "All students prepare a response before selected students speak.",
+      "coach_use_when": [
+        "Same few students answer most questions.",
+        "Teacher wait time is under three seconds.",
+        "Teacher wants broader participation without cold-call pressure."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "hedging"],
+        "uptake_moves": ["probe"],
+        "principles": ["supportive", "collective", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher invites multiple prepared responses and probes differences in thinking.",
+        "wait_time": "Teacher provides explicit private thinking time before public response."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher samples several prepared responses to gauge class understanding."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Emerging",
+        "exposure_pattern": "Students encounter the question first privately, then publicly through peer responses."
+      },
+      "implementation_steps": [
+        "Choose one high-value question.",
+        "Give silent think or jot time.",
+        "Invite several responses.",
+        "Probe one response for reasoning and one for a different approach."
+      ],
+      "cautions": [
+        "Do not shorten the wait time when silence feels uncomfortable.",
+        "Avoid praising only speed or confidence."
+      ]
+    },
+    {
+      "strategy_id": "connect_prior_current_future",
+      "title": "Connect Prior, Current, Future Learning",
+      "summary": "Teacher prompts students to connect today's idea to a prior exposure and a future application.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy", "vocabulary_practice_and_explicit_vocabulary_teaching"],
+      "teacher_move": "Ask, 'Where have we seen this before, and where might we use it next?'",
+      "student_move": "Students name links across lessons, examples, or contexts.",
+      "coach_use_when": [
+        "Lessons feel isolated.",
+        "Students complete tasks but do not transfer ideas.",
+        "Teacher wants to strengthen cumulative talk."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["connecting", "building"],
+        "uptake_moves": ["connect", "probe"],
+        "principles": ["cumulative", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher takes up student connections and uses them to deepen the current concept.",
+        "wait_time": "Teacher allows thinking time for students to retrieve prior learning."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks whether students can connect the concept across contexts."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Embedding",
+        "exposure_pattern": "Students revisit the concept across spaced lessons and varied contexts."
+      },
+      "implementation_steps": [
+        "Identify the prior exposure students should remember.",
+        "Ask students to connect prior and current learning.",
+        "Invite one future-use prediction.",
+        "Record or summarize the strongest connection."
+      ],
+      "cautions": [
+        "If students cannot connect, provide a cue rather than answering for them.",
+        "Keep the focus on meaning, not just lesson chronology."
+      ]
+    },
+    {
+      "strategy_id": "challenge_with_hedged_alternative",
+      "title": "Hedged Challenge Alternative",
+      "summary": "Teacher introduces a respectful alternative view to help students test and refine reasoning.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy"],
+      "teacher_move": "Say, 'One possible challenge to that is ___. How might we respond?'",
+      "student_move": "Students evaluate, defend, revise, or qualify an idea.",
+      "coach_use_when": [
+        "Discussion remains agreeable but shallow.",
+        "Teacher avoids challenging student assumptions.",
+        "Students need practice revising ideas."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["challenging", "hedging", "building"],
+        "uptake_moves": ["probe", "connect"],
+        "principles": ["supportive", "reciprocal", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher challenges the idea, not the student, and invites response or revision.",
+        "wait_time": "Teacher pauses after posing the alternative so students can think before defending or revising."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks whether students understand the limits or conditions of an idea."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Embedding",
+        "exposure_pattern": "Students re-encounter the idea through contrast, exception, or alternative case."
+      },
+      "implementation_steps": [
+        "Choose one student idea worth deepening.",
+        "Frame a challenge as a possible alternative, not a correction.",
+        "Ask students how the idea might need to change.",
+        "Summarize the refined understanding."
+      ],
+      "cautions": [
+        "Challenge assumptions without embarrassing students.",
+        "Use hedging language to preserve safety and openness."
+      ]
+    },
+    {
+      "strategy_id": "student_generated_reexposure_examples",
+      "title": "Student-Generated Re-Exposure Examples",
+      "summary": "Students create new examples or representations to show transfer after initial instruction.",
+      "focus_areas": ["assessment_for_learning_diagnostic_checks", "vocabulary_practice_and_explicit_vocabulary_teaching"],
+      "teacher_move": "Ask students to create a new example, diagram, or scenario that shows the same concept in a different context.",
+      "student_move": "Students apply the concept beyond the original teacher example.",
+      "coach_use_when": [
+        "Students can follow worked examples but struggle to transfer.",
+        "Teacher wants evidence beyond correct completion.",
+        "Multiple exposures are present but mostly teacher-led."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["connecting", "building", "questioning"],
+        "uptake_moves": ["connect", "probe", "redirect"],
+        "principles": ["collective", "cumulative", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher uses student-generated examples to probe transfer and connect ideas.",
+        "wait_time": "Teacher gives sufficient creation time before discussion."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks whether students can generate a valid new example or representation."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Excelling",
+        "exposure_pattern": "Students independently create varied exposures and transfer the concept across contexts."
+      },
+      "implementation_steps": [
+        "After modeling, ask students to create a new example or representation.",
+        "Have pairs compare whether each example fits the concept.",
+        "Invite one pair to explain a strong example and one borderline example.",
+        "Probe the criteria that make the example valid."
+      ],
+      "cautions": [
+        "Provide criteria so examples are not arbitrary.",
+        "Use borderline examples for reasoning, not correction."
+      ]
+    },
+    {
+      "strategy_id": "oracy_academic_recast_rehearsal",
+      "title": "Academic Recast and Rehearsal",
+      "summary": "Teacher recasts a student's everyday language into academic English, then asks the student or pair to rehearse the improved sentence.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy", "vocabulary_practice_and_explicit_vocabulary_teaching"],
+      "teacher_move": "Say, 'You said ___. In the language of today's lesson, we could say ___. Practise saying that with your partner.'",
+      "student_move": "Students repeat, adapt, and use the academic phrasing in a partner response.",
+      "coach_use_when": [
+        "EAL students have the idea but lack the academic English to express it.",
+        "Teacher accepts one-word or informal responses without language development.",
+        "Lesson talk does not build subject-specific vocabulary."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["building", "connecting"],
+        "uptake_moves": ["revoice", "connect"],
+        "principles": ["supportive", "cumulative", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher takes up student meaning and upgrades the language without dismissing the original contribution.",
+        "wait_time": "Teacher gives students rehearsal time before expecting public academic speech."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher listens for whether students can reuse the academic phrase accurately."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students hear, rehearse, and reuse the same academic phrase in one lesson."
+      },
+      "implementation_steps": [
+        "Choose one target sentence frame linked to the lesson objective.",
+        "Listen for a student idea expressed in everyday language.",
+        "Recast the idea in academic English while preserving the student's meaning.",
+        "Ask pairs to rehearse the recast sentence and use it in a response."
+      ],
+      "observable_indicators": [
+        "Teacher explicitly names the upgraded phrase.",
+        "Students orally rehearse the phrase before whole-class sharing.",
+        "At least one later response uses the phrase."
+      ],
+      "cautions": [
+        "Do not imply the student's home or everyday language is wrong.",
+        "Keep the recast short enough for students to use immediately."
+      ]
+    },
+    {
+      "strategy_id": "oracy_build_challenge_stems",
+      "title": "Build and Challenge Sentence Stems",
+      "summary": "Teacher posts and practises two talk stems so students can build on or respectfully challenge ideas.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy"],
+      "teacher_move": "Model: 'I want to build on ___ because ___' and 'I see it differently because ___'; require pairs to use one stem during discussion.",
+      "student_move": "Students use a stem to connect, extend, or question a peer's idea.",
+      "coach_use_when": [
+        "Students answer the teacher but do not speak to each other.",
+        "Discussion lacks cumulative or reciprocal talk.",
+        "EAL students need language frames for extended talk."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["building", "challenging", "hedging"],
+        "uptake_moves": ["redirect", "connect"],
+        "principles": ["collective", "reciprocal", "supportive"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher redirects responses to peers and prompts use of a build or challenge stem.",
+        "wait_time": "Teacher gives pairs time to prepare a stem-based response."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher samples peer responses to check whether students can explain or challenge the idea."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students repeatedly use the same oracy stems across tasks and lessons."
+      },
+      "implementation_steps": [
+        "Select two stems only: one for building and one for challenge.",
+        "Model each stem with a subject-specific example.",
+        "Ask pairs to prepare one build or challenge response.",
+        "Invite two pairs to share and briefly name the talk move used."
+      ],
+      "observable_indicators": [
+        "Stems are visible.",
+        "Students speak to or about each other's ideas.",
+        "Teacher names the talk move rather than only judging correctness."
+      ],
+      "cautions": [
+        "Do not introduce too many stems at once.",
+        "Treat challenge as testing ideas, not criticising classmates."
+      ]
+    },
+    {
+      "strategy_id": "oracy_think_pair_public_share",
+      "title": "Think-Pair-Public Share",
+      "summary": "Teacher protects private thinking and pair rehearsal before asking students to speak publicly in English.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy", "textbook_adaptation_for_underperforming_eal_learners"],
+      "teacher_move": "Say, 'Think silently for 20 seconds, practise your answer with your partner, then I will ask two pairs to share.'",
+      "student_move": "Students prepare language privately, rehearse with a partner, and then share a clearer response.",
+      "coach_use_when": [
+        "EAL students are reluctant to answer publicly.",
+        "Teacher moves from textbook question directly to cold public response.",
+        "Only confident students participate."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "building"],
+        "uptake_moves": ["probe", "redirect"],
+        "principles": ["supportive", "collective", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher uses rehearsed pair responses as the basis for probing and connecting ideas.",
+        "wait_time": "Teacher gives both silent think time and partner rehearsal time."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher samples rehearsed responses from multiple pairs."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Emerging",
+        "exposure_pattern": "Students encounter the question silently, orally with a peer, then publicly."
+      },
+      "implementation_steps": [
+        "Choose one textbook question worth discussing.",
+        "Add silent think time.",
+        "Add partner rehearsal using a target phrase.",
+        "Ask two pairs to share and probe one reasoning detail."
+      ],
+      "observable_indicators": [
+        "Teacher does not take the first hand immediately.",
+        "Most students rehearse orally before public sharing.",
+        "Public answers are longer than one word."
+      ],
+      "cautions": [
+        "Keep the sequence brisk so it supports rather than replaces lesson flow.",
+        "Circulate during pair rehearsal to listen for vocabulary barriers."
+      ]
+    },
+    {
+      "strategy_id": "vocab_three_word_preteach",
+      "title": "Three-Word Vocabulary Pre-Teach",
+      "summary": "Teacher selects three high-leverage words before the textbook task and teaches meaning, pronunciation, and use.",
+      "focus_areas": ["vocabulary_practice_and_explicit_vocabulary_teaching", "textbook_adaptation_for_underperforming_eal_learners"],
+      "teacher_move": "Before the task, teach three words using 'say it, explain it, show it, use it in today's sentence.'",
+      "student_move": "Students pronounce each word, explain it in simple language, and use it in a sentence linked to the task.",
+      "coach_use_when": [
+        "Textbook language blocks access to the task.",
+        "Teacher assumes students know key words because they appear in the book.",
+        "EAL students copy answers without understanding vocabulary."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["connecting", "building"],
+        "uptake_moves": ["connect", "probe"],
+        "principles": ["purposeful", "cumulative"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher prompts students to use the target words in responses later in the lesson.",
+        "wait_time": "Teacher allows rehearsal time before asking students to use new words."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks pronunciation, meaning, and sentence use before the task begins."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Emerging",
+        "exposure_pattern": "Students meet each word through pronunciation, explanation, visual cue, and sentence use."
+      },
+      "implementation_steps": [
+        "Scan the textbook page and choose only three words essential for understanding.",
+        "Prepare a student-friendly explanation and quick visual or gesture for each.",
+        "Students say each word and use it in a short sentence.",
+        "Return to the words during the task and require students to use at least one."
+      ],
+      "observable_indicators": [
+        "Three words are visible.",
+        "Students say the words aloud.",
+        "Teacher checks use, not just copying of definitions."
+      ],
+      "cautions": [
+        "Do not overload students with a long vocabulary list.",
+        "Prioritise words that unlock the task, not every unfamiliar word."
+      ]
+    },
+    {
+      "strategy_id": "vocab_frayer_nonexample",
+      "title": "Fast Frayer with Non-Example",
+      "summary": "Teacher uses a four-part word routine: meaning, example, non-example, and sentence.",
+      "focus_areas": ["vocabulary_practice_and_explicit_vocabulary_teaching"],
+      "teacher_move": "For one key word, ask: 'What does it mean? What is an example? What is not an example? Use it in today's sentence.'",
+      "student_move": "Students distinguish the word from a close non-example and apply it in context.",
+      "coach_use_when": [
+        "Students can repeat definitions but misuse words.",
+        "Vocabulary teaching is copying-only.",
+        "Teacher needs a short routine for deeper word understanding."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "challenging", "connecting"],
+        "uptake_moves": ["probe", "connect"],
+        "principles": ["purposeful", "cumulative"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher probes why an example fits and why a non-example does not.",
+        "wait_time": "Teacher gives students time to compare example and non-example."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks whether students can classify and use the word, not only define it."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students revisit the word through definition, example, contrast, and application."
+      },
+      "implementation_steps": [
+        "Choose one word central to the lesson.",
+        "Give a student-friendly meaning.",
+        "Ask students to identify or create an example and non-example.",
+        "Require a sentence using the word in the lesson context."
+      ],
+      "observable_indicators": [
+        "Students explain why something is or is not an example.",
+        "The word is used in a subject sentence.",
+        "Teacher probes misconceptions about the word."
+      ],
+      "cautions": [
+        "Use one word at a time when students are overloaded.",
+        "Choose non-examples that reveal meaning, not trick cases."
+      ]
+    },
+    {
+      "strategy_id": "vocab_morphology_word_parts",
+      "title": "Word-Part Meaning Routine",
+      "summary": "Teacher teaches a prefix, suffix, or root so students can infer related vocabulary across the textbook.",
+      "focus_areas": ["vocabulary_practice_and_explicit_vocabulary_teaching", "textbook_adaptation_for_underperforming_eal_learners"],
+      "teacher_move": "Say, 'This part of the word means ___. Where else do we see it, and what might the full word mean?'",
+      "student_move": "Students break a word into parts and infer meaning before checking in context.",
+      "coach_use_when": [
+        "Students meet many related academic words.",
+        "Teacher translates or defines each word separately.",
+        "EAL learners need tools for unfamiliar textbook vocabulary."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["connecting", "questioning"],
+        "uptake_moves": ["probe", "connect"],
+        "principles": ["cumulative", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher uses student guesses to connect word parts to meaning.",
+        "wait_time": "Teacher gives students time to inspect the word before giving the answer."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher asks students to apply the word part to a second word."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Embedding",
+        "exposure_pattern": "Students reuse the word-part strategy across multiple related words."
+      },
+      "implementation_steps": [
+        "Select one useful prefix, suffix, or root from the textbook page.",
+        "Explain its meaning briefly.",
+        "Apply it to the target word.",
+        "Ask students to find or predict another related word."
+      ],
+      "observable_indicators": [
+        "Students mark or underline word parts.",
+        "Students infer before being told.",
+        "Teacher returns to the word part later."
+      ],
+      "cautions": [
+        "Avoid obscure etymology; keep the word part useful and repeated.",
+        "Check meaning in sentence context after inference."
+      ]
+    },
+    {
+      "strategy_id": "vocab_retrieval_two_minute_revisit",
+      "title": "Two-Minute Vocabulary Retrieval",
+      "summary": "Teacher revisits previous vocabulary at the start or middle of the lesson through quick retrieval and use.",
+      "focus_areas": ["vocabulary_practice_and_explicit_vocabulary_teaching", "assessment_for_learning_diagnostic_checks"],
+      "teacher_move": "Ask students to retrieve three words from last lesson, match each to a meaning, then use one in today's sentence.",
+      "student_move": "Students recall, match, and apply previously taught vocabulary.",
+      "coach_use_when": [
+        "Vocabulary is taught once and not revisited.",
+        "Students forget terms between lessons.",
+        "Teacher needs a low-preparation routine for multiple exposures."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["connecting", "building"],
+        "uptake_moves": ["connect"],
+        "principles": ["cumulative", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher notices which words are insecure and uses that information in the lesson.",
+        "wait_time": "Teacher gives silent retrieval time before sharing answers."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher quickly identifies which vocabulary needs reteaching."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Embedding",
+        "exposure_pattern": "Students retrieve and reuse words across spaced lessons."
+      },
+      "implementation_steps": [
+        "Choose three words from the previous lesson.",
+        "Ask students to recall or match meanings without notes first.",
+        "Have students use one word in today's context.",
+        "Reteach the word most students missed."
+      ],
+      "observable_indicators": [
+        "Students retrieve before looking back.",
+        "Teacher scans responses.",
+        "One vocabulary gap informs immediate instruction."
+      ],
+      "cautions": [
+        "Keep retrieval brief.",
+        "Do not turn vocabulary retrieval into a spelling-only activity."
+      ]
+    },
+    {
+      "strategy_id": "afl_mini_whiteboard_scan",
+      "title": "Mini-Whiteboard Diagnostic Scan",
+      "summary": "Teacher asks all students to show a response at once, scans patterns, and adjusts instruction immediately.",
+      "focus_areas": ["assessment_for_learning_diagnostic_checks"],
+      "teacher_move": "Ask one diagnostic question, say 'boards up in 3, 2, 1', scan for patterns, then decide whether to move on, reteach, or pair-correct.",
+      "student_move": "Every student commits to an answer that the teacher can quickly inspect.",
+      "coach_use_when": [
+        "Teacher relies on volunteers to judge understanding.",
+        "Misunderstandings are discovered only during marking.",
+        "The class moves on before most students are ready."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning"],
+        "uptake_moves": ["probe"],
+        "principles": ["purposeful", "collective"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher uses whole-class response data to choose the next teaching move.",
+        "wait_time": "Teacher gives all students time to think before boards up."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks every student's understanding, not only confident volunteers."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students who show partial understanding receive immediate re-exposure."
+      },
+      "implementation_steps": [
+        "Prepare one question that reveals the key misconception.",
+        "Have every student write a response.",
+        "Scan responses by pattern, not individual blame.",
+        "Choose one immediate response: move on, reteach, or peer compare."
+      ],
+      "observable_indicators": [
+        "All students respond.",
+        "Teacher scans before revealing the answer.",
+        "Teacher's next step changes based on the scan."
+      ],
+      "cautions": [
+        "Do not ask questions that only check copying.",
+        "Avoid naming students publicly for incorrect answers."
+      ]
+    },
+    {
+      "strategy_id": "afl_stop_check_reteach",
+      "title": "Stop-Check-Reteach Decision Point",
+      "summary": "Teacher builds a planned pause into the lesson to diagnose understanding and choose a response.",
+      "focus_areas": ["assessment_for_learning_diagnostic_checks", "textbook_adaptation_for_underperforming_eal_learners"],
+      "teacher_move": "After a short input or textbook example, stop and ask: 'Show me which step is unclear: A, B, or C'; reteach the most common barrier.",
+      "student_move": "Students identify where understanding breaks down rather than silently continuing.",
+      "coach_use_when": [
+        "Teacher completes textbook sections without checking learning during the lesson.",
+        "Students appear compliant but later produce inaccurate work.",
+        "EAL barriers emerge at a specific instruction step."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "connecting"],
+        "uptake_moves": ["probe", "connect"],
+        "principles": ["purposeful", "supportive"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher uses student responses to reteach a precise barrier.",
+        "wait_time": "Teacher pauses the task early enough for students to think and respond."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher identifies the step where understanding breaks down."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students receive a targeted second exposure to the unclear step."
+      },
+      "implementation_steps": [
+        "Identify a natural stopping point before independent work.",
+        "Ask students to indicate which step or word is unclear.",
+        "Count the most common barrier.",
+        "Reteach that barrier with a different example or representation."
+      ],
+      "observable_indicators": [
+        "The lesson pauses before many students practise incorrectly.",
+        "Students identify a barrier.",
+        "Teacher reteaches one precise point."
+      ],
+      "cautions": [
+        "Plan the stop point before the lesson.",
+        "Do not ask 'Does everyone understand?' as the diagnostic check."
+      ]
+    },
+    {
+      "strategy_id": "afl_mini_plenary_error_sort",
+      "title": "Mini-Plenary Error Sort",
+      "summary": "Teacher uses two or three anonymised errors mid-lesson so students diagnose misconceptions and improve work.",
+      "focus_areas": ["assessment_for_learning_diagnostic_checks", "dialogic_teaching_for_english_oracy"],
+      "teacher_move": "Display two anonymous responses and ask, 'Which one is stronger, what is the misconception, and how would we improve it?'",
+      "student_move": "Students discuss errors as learning evidence and propose improvements.",
+      "coach_use_when": [
+        "Teacher gives feedback only after collecting books.",
+        "Students repeat the same misconception during practice.",
+        "Class discussion needs a purposeful reason to talk."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["challenging", "building", "connecting"],
+        "uptake_moves": ["probe", "redirect", "connect"],
+        "principles": ["supportive", "cumulative", "purposeful"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher takes up student analysis of errors and links it to success criteria.",
+        "wait_time": "Teacher gives pairs time to inspect the errors before whole-class discussion."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks whether students can recognise and correct a misconception."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Embedding",
+        "exposure_pattern": "Students re-encounter the concept through error analysis and improvement."
+      },
+      "implementation_steps": [
+        "Collect two common anonymous errors during practice.",
+        "Pause the class for a three-minute mini-plenary.",
+        "Ask pairs to identify the misconception and improvement.",
+        "Students return to their own work and revise one answer."
+      ],
+      "observable_indicators": [
+        "Errors are anonymous.",
+        "Students explain the misconception.",
+        "Students revise their own work after the discussion."
+      ],
+      "cautions": [
+        "Use errors as class learning evidence, not as public criticism.",
+        "Select errors that reveal teachable misconceptions."
+      ]
+    },
+    {
+      "strategy_id": "afl_exit_ticket_group_next_step",
+      "title": "Exit Ticket to Group the Next Step",
+      "summary": "Teacher uses a one-question exit ticket to decide the next lesson's grouping or reteach focus.",
+      "focus_areas": ["assessment_for_learning_diagnostic_checks"],
+      "teacher_move": "End with one question that reveals the lesson's key understanding; sort responses into 'secure', 'partial', and 'needs reteach' for next lesson planning.",
+      "student_move": "Students independently show what they understand at the end of the lesson.",
+      "coach_use_when": [
+        "Teacher is unsure what students learned from the lesson.",
+        "Next lessons are planned from textbook sequence only.",
+        "Feedback does not affect grouping or reteaching."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "connecting"],
+        "uptake_moves": ["probe"],
+        "principles": ["purposeful", "cumulative"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher uses exit ticket evidence to plan the next teaching move.",
+        "wait_time": "Teacher gives independent thinking time before collecting responses."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher gathers individual evidence from every student."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students who are partial receive targeted re-exposure next lesson."
+      },
+      "implementation_steps": [
+        "Write one question linked to the lesson goal.",
+        "Students answer independently in the final three minutes.",
+        "Sort responses into three groups after the lesson.",
+        "Plan the first five minutes of the next lesson from the pattern."
+      ],
+      "observable_indicators": [
+        "The exit question is diagnostic, not generic.",
+        "Teacher sorts responses by misconception or confidence.",
+        "Next lesson starts with evidence-based grouping or reteach."
+      ],
+      "cautions": [
+        "Do not collect exit tickets without using them.",
+        "Keep the question short enough for independent completion."
+      ]
+    },
+    {
+      "strategy_id": "textbook_vocab_barrier_scan",
+      "title": "Textbook Vocabulary Barrier Scan",
+      "summary": "Teacher scans a textbook task for vocabulary barriers before teaching and plans quick language support.",
+      "focus_areas": ["textbook_adaptation_for_underperforming_eal_learners", "vocabulary_practice_and_explicit_vocabulary_teaching"],
+      "teacher_move": "Before students begin, ask: 'Which words on this page could stop students understanding the task?' then teach or annotate the top three.",
+      "student_move": "Students use annotated or rehearsed vocabulary to access the textbook task.",
+      "coach_use_when": [
+        "Teacher follows the textbook page without adapting for EAL learners.",
+        "Students misunderstand instructions or key terms.",
+        "Vocabulary demands are hidden inside word problems or explanations."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["connecting", "questioning"],
+        "uptake_moves": ["connect", "probe"],
+        "principles": ["purposeful", "supportive"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher checks whether students can use the words to explain the task.",
+        "wait_time": "Teacher gives time to process vocabulary before task completion."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher verifies that students understand task language before independent work."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Emerging",
+        "exposure_pattern": "Students see, hear, say, and apply the key task words."
+      },
+      "implementation_steps": [
+        "Read the textbook task from the perspective of an EAL learner.",
+        "Circle three words or phrases that could block understanding.",
+        "Teach or annotate those words before students start.",
+        "Ask one student to explain the task using the target words."
+      ],
+      "observable_indicators": [
+        "Teacher adapts language access before the task.",
+        "Students can explain what the task is asking.",
+        "Vocabulary support is connected to the textbook activity."
+      ],
+      "cautions": [
+        "Do not simplify the learning goal away.",
+        "Support access to the task rather than replacing thinking with copying."
+      ]
+    },
+    {
+      "strategy_id": "textbook_question_upgrade_dialogic",
+      "title": "Textbook Question Upgrade",
+      "summary": "Teacher converts one closed textbook question into a dialogic question that requires explanation, evidence, or comparison.",
+      "focus_areas": ["dialogic_teaching_for_english_oracy", "textbook_adaptation_for_underperforming_eal_learners"],
+      "teacher_move": "Change 'What is the answer?' into 'How do you know?', 'Which method is better here?', or 'What evidence supports that answer?'",
+      "student_move": "Students explain reasoning instead of only giving the textbook answer.",
+      "coach_use_when": [
+        "Textbook work produces short answers and little talk.",
+        "Teacher asks mainly recall or answer-checking questions.",
+        "Students need practice explaining in English."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["questioning", "building", "challenging"],
+        "uptake_moves": ["probe", "redirect"],
+        "principles": ["purposeful", "reciprocal", "cumulative"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher probes reasoning and invites another student to build or compare.",
+        "wait_time": "Teacher gives students time to form an explanation before answering."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher checks reasoning, not just answer accuracy."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students revisit the textbook item through explanation and peer comparison."
+      },
+      "implementation_steps": [
+        "Choose one textbook question that matters most.",
+        "Add one explanation stem: 'I know because ___.'",
+        "Ask pairs to explain before whole-class sharing.",
+        "Invite a second student to build, question, or compare methods."
+      ],
+      "observable_indicators": [
+        "At least one textbook item becomes an explanation question.",
+        "Students use evidence or reasoning language.",
+        "Teacher follows up rather than only confirming the answer."
+      ],
+      "cautions": [
+        "Upgrade one question first; do not redesign the whole textbook page at once.",
+        "Keep the question tied to the lesson goal."
+      ]
+    },
+    {
+      "strategy_id": "textbook_page_to_learning_sequence",
+      "title": "Textbook Page to Learning Sequence",
+      "summary": "Teacher turns a textbook page into a short learning sequence: prepare language, model one example, diagnose, then practise.",
+      "focus_areas": [
+        "textbook_adaptation_for_underperforming_eal_learners",
+        "vocabulary_practice_and_explicit_vocabulary_teaching",
+        "assessment_for_learning_diagnostic_checks"
+      ],
+      "teacher_move": "Plan the page as: '3 words, 1 model, 1 check, then practice' instead of starting with independent textbook work.",
+      "student_move": "Students access vocabulary, see a model, show understanding, then practise with less confusion.",
+      "coach_use_when": [
+        "Teacher begins lessons by assigning textbook exercises.",
+        "Students copy examples without understanding.",
+        "Lesson design lacks an early diagnostic point."
+      ],
+      "alexander_mapping": {
+        "discourse_capacities": ["connecting", "questioning"],
+        "uptake_moves": ["probe", "connect"],
+        "principles": ["purposeful", "cumulative", "supportive"]
+      },
+      "look_fors": {
+        "response_uptake": "Teacher checks student understanding before extended textbook practice.",
+        "wait_time": "Teacher includes processing time after the model and before practice."
+      },
+      "jim_knight_big_four": {
+        "checks_for_understanding": "Teacher uses one diagnostic check between modelling and practice."
+      },
+      "hits_multiple_exposures": {
+        "continuum_level": "Evolving",
+        "exposure_pattern": "Students encounter the concept through vocabulary, model, diagnostic check, and practice."
+      },
+      "implementation_steps": [
+        "Select the page section that matches the lesson goal.",
+        "Teach three barrier words.",
+        "Model one example while naming the thinking.",
+        "Use one diagnostic check before students practise independently."
+      ],
+      "observable_indicators": [
+        "The textbook is used as a resource, not the full lesson plan.",
+        "Vocabulary is prepared before practice.",
+        "A check for understanding occurs before independent work."
+      ],
+      "cautions": [
+        "Do not abandon the textbook; adapt it deliberately.",
+        "Keep the sequence simple enough for routine use."
+      ]
+    }
+  ]
+}

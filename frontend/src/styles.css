@@ -1,0 +1,317 @@
+:root {
+  color: #172033;
+  background: #f5f7fb;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  background: #2454d6;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.9rem 1.4rem;
+}
+
+button:disabled {
+  background: #9aa7c7;
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #cfdaef;
+  border-radius: 0.85rem;
+  background: #ffffff;
+  color: #172033;
+  padding: 0.85rem;
+}
+
+textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  gap: 1rem;
+  margin: 0 auto 2rem;
+  max-width: 1500px;
+}
+
+.hero h1 {
+  font-size: clamp(2.1rem, 6vw, 4.5rem);
+  line-height: 0.95;
+  margin: 0;
+}
+
+.hero p {
+  color: #52617d;
+  font-size: 1.05rem;
+  max-width: 55rem;
+}
+
+.eyebrow {
+  color: #2454d6;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.7rem;
+  text-transform: uppercase;
+}
+
+.privacy-card,
+.access-panel,
+.panel,
+.error-card {
+  border: 1px solid #dce4f5;
+  border-radius: 1.25rem;
+  background: #ffffff;
+  box-shadow: 0 20px 45px rgb(38 62 102 / 8%);
+}
+
+.privacy-card {
+  align-self: start;
+  display: grid;
+  gap: 0.65rem;
+  padding: 1.25rem;
+}
+
+.access-panel {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 auto 1.5rem;
+  max-width: 1500px;
+  padding: 1rem 1.25rem;
+}
+
+.access-panel label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.access-panel label span {
+  font-weight: 800;
+}
+
+.access-panel p {
+  color: #5b6780;
+  margin: 0;
+}
+
+.privacy-card span,
+.panel__header p,
+.field__hint,
+.mini-card p,
+.list-block li,
+.sticky-actions span {
+  color: #5b6780;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(26rem, 0.9fr) minmax(0, 1.1fr);
+  gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 1500px;
+}
+
+.form-stack,
+.output-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  padding: 1.25rem;
+}
+
+.panel--accent {
+  border-color: #b9caff;
+  background: linear-gradient(135deg, #ffffff 0%, #eef3ff 100%);
+}
+
+.panel__header {
+  margin-bottom: 1rem;
+}
+
+.panel__header h2 {
+  margin: 0 0 0.35rem;
+}
+
+.panel__header p {
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field__label {
+  font-weight: 800;
+}
+
+.field__hint {
+  font-size: 0.9rem;
+}
+
+.context-grid,
+.calibration-grid,
+.challenge-grid,
+.grow-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.context-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.calibration-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.challenge-grid,
+.grow-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grow-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sticky-actions {
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  z-index: 10;
+}
+
+.results-column {
+  min-width: 0;
+}
+
+.empty-state {
+  position: sticky;
+  top: 1rem;
+}
+
+.error-card {
+  border-color: #ffc7c7;
+  background: #fff3f3;
+  color: #8a1f1f;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.card-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.mini-card {
+  border: 1px solid #e2e9f6;
+  border-radius: 1rem;
+  background: #fbfcff;
+  padding: 1rem;
+}
+
+.mini-card h3,
+.list-block h3 {
+  font-size: 1rem;
+  margin: 0 0 0.45rem;
+}
+
+.mini-card p {
+  margin: 0 0 0.8rem;
+}
+
+.mini-card p:last-child {
+  margin-bottom: 0;
+}
+
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  background: #eef3ff;
+  color: #2454d6;
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin-bottom: 0.65rem;
+  padding: 0.35rem 0.65rem;
+  text-transform: capitalize;
+}
+
+.list-block {
+  margin-top: 1rem;
+}
+
+.list-block ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.list-block li + li {
+  margin-top: 0.45rem;
+}
+
+@media (max-width: 1100px) {
+  .hero,
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .privacy-card,
+  .empty-state {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    padding: 1rem;
+  }
+
+  .context-grid,
+  .calibration-grid,
+  .challenge-grid,
+  .grow-grid {
+    grid-template-columns: 1fr;
+  }
+}

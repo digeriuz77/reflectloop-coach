@@ -1,0 +1,461 @@
+{
+  "version": "0.1.0",
+  "purpose": "Coach-only internal calibration prompts. Coach answers should be treated as evidence signals, not objective ratings, and must not be presented as teacher-facing scores or progress labels.",
+  "calibration_questions": [
+    {
+      "field": "implementation_pattern",
+      "question": "What best describes the teacher's recent implementation?",
+      "options": [
+        {
+          "value": "sustained_implementation",
+          "label": "Sustained implementation",
+          "description": "Used the strategy repeatedly over time."
+        },
+        {
+          "value": "one_time_attempt",
+          "label": "One-time attempt",
+          "description": "Tried it once or briefly."
+        },
+        {
+          "value": "planned_not_attempted",
+          "label": "Planned but not attempted",
+          "description": "Discussed or planned the move but has not yet tried it."
+        },
+        {
+          "value": "reverted_to_old_habits",
+          "label": "Reverted to old habits",
+          "description": "Initially tried the move but returned to prior practice."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    },
+    {
+      "field": "adaptation_pattern",
+      "question": "After trying the strategy, what happened next?",
+      "options": [
+        {
+          "value": "adapted_based_on_evidence",
+          "label": "Adapted based on evidence",
+          "description": "Adjusted the approach based on what happened in class."
+        },
+        {
+          "value": "repeated_without_adjustment",
+          "label": "Repeated without adjustment",
+          "description": "Repeated the same move without much reflection or adaptation."
+        },
+        {
+          "value": "stopped_after_difficulty",
+          "label": "Stopped after difficulty",
+          "description": "Stopped when the strategy felt awkward, hard, or unclear."
+        },
+        {
+          "value": "waiting_for_more_direction",
+          "label": "Waiting for more direction",
+          "description": "Appears to need the coach to prescribe the next step."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    },
+    {
+      "field": "ownership_signal",
+      "question": "How did the teacher talk about the work?",
+      "options": [
+        {
+          "value": "owns_decisions_and_learning",
+          "label": "Owns decisions and learning",
+          "description": "Names what they tried, why, and what they learned."
+        },
+        {
+          "value": "partial_ownership",
+          "label": "Partial ownership",
+          "description": "Acknowledges some role but focuses heavily on constraints."
+        },
+        {
+          "value": "externalizes_responsibility",
+          "label": "Externalises responsibility",
+          "description": "Attributes lack of progress mostly to students, context, time, or materials."
+        },
+        {
+          "value": "defensive_or_dismissive",
+          "label": "Defensive or dismissive",
+          "description": "Resists examining their own practice or dismisses the coaching focus."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    },
+    {
+      "field": "risk_taking_signal",
+      "question": "Did the teacher take an instructional risk?",
+      "options": [
+        {
+          "value": "meaningful_risk_taken",
+          "label": "Meaningful risk taken",
+          "description": "Tried something outside normal comfort zone."
+        },
+        {
+          "value": "small_safe_adjustment",
+          "label": "Small safe adjustment",
+          "description": "Made a minor low-risk change."
+        },
+        {
+          "value": "avoided_risk",
+          "label": "Avoided risk",
+          "description": "Chose not to try a needed stretch move."
+        },
+        {
+          "value": "risk_not_relevant",
+          "label": "Risk not relevant",
+          "description": "This session does not provide evidence about risk-taking."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    },
+    {
+      "field": "artifact_evidence",
+      "question": "What concrete evidence exists?",
+      "options": [
+        {
+          "value": "teacher_artifact",
+          "label": "Teacher artifact",
+          "description": "Lesson plan, revised materials, reflection, or unit plan shows the work."
+        },
+        {
+          "value": "student_artifact",
+          "label": "Student artifact",
+          "description": "Student work, exit tickets, discussion evidence, or assessment responses show the impact."
+        },
+        {
+          "value": "observation_evidence",
+          "label": "Observation evidence",
+          "description": "Coach or peer directly saw the implementation."
+        },
+        {
+          "value": "anecdotal_only",
+          "label": "Anecdotal only",
+          "description": "The coach heard a description but has not seen artifacts or implementation evidence."
+        },
+        {
+          "value": "none_or_unknown",
+          "label": "None or unknown",
+          "description": "No concrete evidence is currently available."
+        }
+      ]
+    },
+    {
+      "field": "student_outcome_signal",
+      "question": "What student-facing evidence is visible?",
+      "options": [
+        {
+          "value": "positive_student_shift",
+          "label": "Positive student shift",
+          "description": "Engagement, participation, work quality, or understanding appears to have improved."
+        },
+        {
+          "value": "mixed_or_unclear_shift",
+          "label": "Mixed or unclear shift",
+          "description": "Some signs are visible, but not consistently enough to infer progress."
+        },
+        {
+          "value": "no_observed_shift",
+          "label": "No observed shift",
+          "description": "No meaningful student-facing change has been observed yet."
+        },
+        {
+          "value": "negative_or_resistant_shift",
+          "label": "Negative or resistant shift",
+          "description": "Student response worsened or resistance increased."
+        },
+        {
+          "value": "not_observed",
+          "label": "Not observed",
+          "description": "Student-facing evidence has not yet been examined."
+        }
+      ]
+    },
+    {
+      "field": "engagement_stance",
+      "question": "During coaching, the teacher was mostly:",
+      "options": [
+        {
+          "value": "active_problem_solver",
+          "label": "Active problem-solver",
+          "description": "Asked questions, tested ideas, reflected, and helped shape the next step."
+        },
+        {
+          "value": "compliant_participant",
+          "label": "Compliant participant",
+          "description": "Went through the steps but showed little initiative or ownership."
+        },
+        {
+          "value": "passive_observer",
+          "label": "Passive observer",
+          "description": "Listened or watched but did not engage deeply with practice."
+        },
+        {
+          "value": "defensive_participant",
+          "label": "Defensive participant",
+          "description": "Protected current practice or rejected feedback."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    },
+    {
+      "field": "resistance_context",
+      "question": "If resistance appeared, what best explains it?",
+      "options": [
+        {
+          "value": "productive_discomfort",
+          "label": "Productive discomfort",
+          "description": "The discomfort seems connected to a meaningful professional stretch."
+        },
+        {
+          "value": "coach_induced_resistance",
+          "label": "Coach-induced resistance",
+          "description": "A coaching move may have created defensiveness, mistrust, or loss of agency."
+        },
+        {
+          "value": "change_avoidance",
+          "label": "Change avoidance",
+          "description": "Teacher avoided a needed change despite support."
+        },
+        {
+          "value": "system_constraint",
+          "label": "System constraint",
+          "description": "Barrier appears mostly structural, time-based, or resource-based."
+        },
+        {
+          "value": "no_resistance_observed",
+          "label": "No resistance observed",
+          "description": "Resistance was not visible in this session."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    },
+    {
+      "field": "dialogic_participation_pattern",
+      "question": "Which classroom talk pattern is most visible?",
+      "options": [
+        {
+          "value": "group_shouting_few_students",
+          "label": "Group shouting / few students",
+          "description": "Students often shout together or a few students dominate while others stay quiet."
+        },
+        {
+          "value": "early_individual_volunteers",
+          "label": "Early individual volunteers",
+          "description": "Some group shouting remains, but the teacher is beginning to invite individual responses."
+        },
+        {
+          "value": "targeted_questioning_pauses",
+          "label": "Targeted questioning and pauses",
+          "description": "Teacher targets individuals or volunteers and uses pauses for thinking time."
+        },
+        {
+          "value": "multiple_participation_modes",
+          "label": "Multiple participation modes",
+          "description": "Teacher uses mini-whiteboards, pair talk, small groups, or other participation structures."
+        },
+        {
+          "value": "purposeful_movement_between_talk_modes",
+          "label": "Purposeful movement between talk modes",
+          "description": "Teacher chooses talk structures based on lesson goal and uses group ideas in whole-class discussion."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    },
+    {
+      "field": "reflective_depth_signal",
+      "question": "Which reflection pattern best fits the teacher's current reflection?",
+      "options": [
+        {
+          "value": "action_focused",
+          "label": "Action-focused",
+          "description": "Focuses mainly on what was done, with little attention to assumptions or framing."
+        },
+        {
+          "value": "surface_cause_single_loop",
+          "label": "Surface cause / single-loop",
+          "description": "Names surface causes or external factors and proposes tweaks within the same frame."
+        },
+        {
+          "value": "assumption_aware",
+          "label": "Assumption-aware",
+          "description": "Identifies assumptions and can consider alternative frames with prompting."
+        },
+        {
+          "value": "reframing_and_transfer",
+          "label": "Reframing and transfer",
+          "description": "Questions governing beliefs, reconstructs the problem, and generalises learning."
+        },
+        {
+          "value": "unknown",
+          "label": "Unknown",
+          "description": "There is not enough evidence yet."
+        }
+      ]
+    }
+  ],
+  "rubrics": {
+    "dialogic_talk_level": {
+      "scale": "1-5",
+      "levels": [
+        {
+          "level": 1,
+          "label": "Group shouting / limited targeting",
+          "description": "Students often shout answers together. Questions are mostly not aimed at specific students. A few students dominate while others stay quiet or copy.",
+          "coaching_implication": "Support the coach to begin with participation structures and protected thinking time."
+        },
+        {
+          "level": 2,
+          "label": "Early individual participation",
+          "description": "Some group shouting remains, but the teacher starts asking individuals to volunteer and notices quiet students.",
+          "coaching_implication": "Support routines for inviting individuals without increasing anxiety."
+        },
+        {
+          "level": 3,
+          "label": "Targeted questioning and pauses",
+          "description": "Group shouting largely stops. The teacher asks volunteers or specific students and uses pauses to give thinking time.",
+          "coaching_implication": "Build from participation into uptake, probing, and pair rehearsal."
+        },
+        {
+          "level": 4,
+          "label": "Multiple participation modes",
+          "description": "Teacher uses varied ways to ask questions, including individuals, mini-whiteboards, pairs, or small groups.",
+          "coaching_implication": "Support diagnostic selection of talk structures and stronger student-to-student talk."
+        },
+        {
+          "level": 5,
+          "label": "Purposeful movement between talk modes",
+          "description": "Teacher chooses questioning mode based on prior knowledge and lesson goal, then uses small-group ideas to lead whole-class discussion.",
+          "coaching_implication": "Support refinement, transfer, and teacher artistry rather than basic participation routines."
+        }
+      ]
+    },
+    "double_loop_reflection_level": {
+      "scale": "beginning-developing-proficient-distinguished",
+      "levels": [
+        {
+          "level": "beginning",
+          "label": "Action-focused",
+          "description": "Reflection focuses on what was done with little awareness of assumptions, framing, or governing beliefs.",
+          "coaching_implication": "Use gentle questions that connect actions to beliefs and perceived risks."
+        },
+        {
+          "level": "developing",
+          "label": "Surface cause / single-loop",
+          "description": "Reflection names surface reasons or external factors and tends to propose tweaks within the same frame.",
+          "coaching_implication": "Invite the teacher to compare interpretations and test whether the original framing is helping."
+        },
+        {
+          "level": "proficient",
+          "label": "Assumption-aware",
+          "description": "Reflection identifies main assumptions and can consider alternative ways to frame the situation with prompting.",
+          "coaching_implication": "Use moderate challenge to connect reframing to a new classroom experiment."
+        },
+        {
+          "level": "distinguished",
+          "label": "Reframing and transfer",
+          "description": "Reflection explicitly questions governing beliefs, reconstructs the problem, and generalises learning to future contexts.",
+          "coaching_implication": "Use direct, expansive questions about transfer, principles, and adaptive expertise."
+        }
+      ]
+    },
+    "schon_reflection_in_action_level": {
+      "scale": "1-3",
+      "levels": [
+        {
+          "level": 1,
+          "label": "Rigid",
+          "description": "Teacher tends to continue the original plan even when students show confusion or disengagement.",
+          "coaching_implication": "Plan one in-the-moment cue that signals when to pause or adjust."
+        },
+        {
+          "level": 2,
+          "label": "Reactive",
+          "description": "Teacher notices difficulty but adapts after hesitation or mainly through standard procedures.",
+          "coaching_implication": "Support a small decision tree for likely barriers."
+        },
+        {
+          "level": 3,
+          "label": "Adaptive artistry",
+          "description": "Teacher notices unexpected variables and tests revised actions in the moment without losing learning focus.",
+          "coaching_implication": "Help name the tacit judgement so it can transfer to new contexts."
+        }
+      ]
+    },
+    "schon_reflection_on_action_level": {
+      "scale": "1-3",
+      "levels": [
+        {
+          "level": 1,
+          "label": "Surface description",
+          "description": "Teacher describes events but does not evaluate causes or assumptions; may mainly attribute difficulty externally.",
+          "coaching_implication": "Start with evidence-to-interpretation questions."
+        },
+        {
+          "level": 2,
+          "label": "Descriptive improvement",
+          "description": "Teacher accurately states what happened and offers a broad improvement idea, but root causes remain underexplored.",
+          "coaching_implication": "Move from description to why this pattern occurred."
+        },
+        {
+          "level": 3,
+          "label": "Root-cause reframing",
+          "description": "Teacher identifies why outcomes differed from expectations and converts insight into future action.",
+          "coaching_implication": "Support transfer and precise implementation planning."
+        }
+      ]
+    },
+    "professional_artistry_level": {
+      "scale": "1-3",
+      "levels": [
+        {
+          "level": 1,
+          "label": "Low openness to feedback",
+          "description": "Teacher may reject feedback, avoid introspection, or assume no further refinement is needed.",
+          "coaching_implication": "Use autonomy-supportive language and small safe experiments."
+        },
+        {
+          "level": 2,
+          "label": "Episodic reflection",
+          "description": "Teacher reflects when prompted but learning is not yet a continuous improvement cycle.",
+          "coaching_implication": "Connect one reflection routine to a repeated classroom practice."
+        },
+        {
+          "level": 3,
+          "label": "Growth-oriented artistry",
+          "description": "Teacher shows evolving thinking and enthusiasm for refining practice over time.",
+          "coaching_implication": "Use more ambitious inquiry and transfer questions."
+        }
+      ]
+    }
+  }
+}
