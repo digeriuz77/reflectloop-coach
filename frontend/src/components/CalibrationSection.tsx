@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { CoachCalibration } from "../types/coachPrep";
 import { Field } from "./Field";
 
@@ -147,51 +148,84 @@ type CalibrationSectionProps = {
 };
 
 export function CalibrationSection({ value, onChange }: CalibrationSectionProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   function updateField(field: keyof CoachCalibration, fieldValue: string) {
     onChange({
       ...value,
-      [field]: fieldValue
+      [field]: fieldValue || undefined
     });
   }
 
+  // Count active signals (excluding notes field)
+  const activeSignalsCount = Object.entries(value).filter(
+    ([key, val]) => key !== "calibration_notes" && val !== undefined && val !== ""
+  ).length;
+
   return (
-    <section className="panel">
-      <div className="panel__header">
-        <h2>Coach calibration signals</h2>
-        <p>
-          Optional, internal prompts to tailor challenge level. These are evidence signals, not
-          teacher scores.
-        </p>
-      </div>
-
-      <div className="calibration-grid">
-        {questions.map((question) => (
-          <Field key={question.field} label={question.label} hint={question.hint}>
-            <select
-              value={(value[question.field] as string | undefined) ?? ""}
-              onChange={(event) => updateField(question.field, event.target.value)}
-            >
-              <option value="">Not selected</option>
-              {question.options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </Field>
-        ))}
-      </div>
-
-      <Field
-        label="Calibration notes"
-        hint="Optional private coach note about uncertainty, context, or relationship dynamics."
+    <article className={`accordion ${isOpen ? "accordion--open" : ""}`}>
+      <header
+        className="accordion__trigger"
+        onClick={() => setIsOpen(!isOpen)}
+        title="Toggle coach calibration parameters"
       >
-        <textarea
-          value={value.calibration_notes ?? ""}
-          onChange={(event) => updateField("calibration_notes", event.target.value)}
-          rows={3}
-        />
-      </Field>
-    </section>
+        <div className="accordion__title-group">
+          <span style={{ fontSize: "1.1rem", fontWeight: 700 }}>
+            🔧 Advanced Calibration Signals {activeSignalsCount > 0 ? `(${activeSignalsCount} active)` : "(Optional)"}
+          </span>
+          <span className="accordion__subtitle">
+            Tailor the coaching challenge level, frame reframing, and GROW advice based on specific evidence.
+          </span>
+        </div>
+        <svg
+          className="accordion__chevron"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </header>
+
+      <div className="accordion__content">
+        <p style={{ margin: "0 0 1.25rem", fontSize: "0.92rem", color: "var(--text-muted)", lineHeight: 1.5 }}>
+          Adjust these options to provide targeted context. These indicators represent observation evidence cues, 
+          not appraisal ratings, and are kept strictly private to the coach surface.
+        </p>
+
+        <div className="calibration-grid">
+          {questions.map((question) => (
+            <Field key={question.field} label={question.label} hint={question.hint}>
+              <select
+                value={(value[question.field] as string | undefined) ?? ""}
+                onChange={(event) => updateField(question.field, event.target.value)}
+              >
+                <option value="">Not selected</option>
+                {question.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+          ))}
+        </div>
+
+        <Field
+          label="Calibration notes"
+          hint="Optional private coach note about uncertainty, context, or relationship dynamics."
+        >
+          <textarea
+            value={value.calibration_notes ?? ""}
+            onChange={(event) => updateField("calibration_notes", event.target.value)}
+            rows={3}
+            placeholder="e.g. Note any specific dialogic evidence gaps or concerns about teacher defensive postures..."
+          />
+        </Field>
+      </div>
+    </article>
   );
 }

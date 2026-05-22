@@ -70,8 +70,17 @@ export default function App() {
         <CoachPrepForm isLoading={isLoading} onSubmit={handleSubmit} />
 
         <aside className="results-column">
-          {error ? <div className="error-card">{error}</div> : null}
-          {output ? (
+          {isLoading ? (
+            <div className="panel loading-overlay">
+              <div className="loading-spinner"></div>
+              <div className="loading-text">Synthesizing Session Data...</div>
+              <div className="loading-sub">
+                Reframing dominant assumptions, generating Double-Loop questions, and building your custom GROW coaching conversation guide...
+              </div>
+            </div>
+          ) : error ? (
+            <div className="error-card">{error}</div>
+          ) : output ? (
             <OutputCards output={output} />
           ) : (
             <section className="panel empty-state">
