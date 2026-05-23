@@ -161,6 +161,66 @@ def test_notes_can_be_entered_without_observation_metadata() -> None:
     assert response.status_code == 200
 
 
+def test_session_history_can_be_entered_without_note_text() -> None:
+    app.dependency_overrides[get_coach_prep_service] = override_service
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/coach-prep/generate",
+        json={
+            "session_history": [
+                {
+                    "source_date": "5/21/2026",
+                    "teacher": "Anis",
+                    "school": "St. Bartholomew",
+                    "coach": "Shamim",
+                    "current_goal": "Use dialogic prompts with CPA subtraction tasks.",
+                    "progress": "Progressing",
+                    "teacher_reflection": (
+                        "I want to incorporate CPA focusing on concrete stage in subtraction."
+                    ),
+                    "coach_reflection": (
+                        "We need to streamline the focus back to dialogic strategies."
+                    ),
+                    "rag": "Green",
+                    "ai_teacher_summary": (
+                        "Anis is showing dedication to integrating CPA strategies."
+                    ),
+                    "ai_coach_next_step": (
+                        "Link concrete manipulatives to specific dialogic talk prompts."
+                    ),
+                }
+            ],
+        },
+    )
+
+    app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+
+
+def test_session_history_rejects_unknown_top_level_row_fields() -> None:
+    app.dependency_overrides[get_coach_prep_service] = override_service
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/coach-prep/generate",
+        json={
+            "session_history": [
+                {
+                    "source_date": "5/21/2026",
+                    "teacher": "Anis",
+                    "unmapped_upload_column": "This should be sent through raw_fields instead.",
+                }
+            ],
+        },
+    )
+
+    app.dependency_overrides.clear()
+
+    assert response.status_code == 422
+
+
 def test_direct_numeric_calibration_ratings_are_rejected() -> None:
     app.dependency_overrides[get_coach_prep_service] = override_service
     client = TestClient(app)

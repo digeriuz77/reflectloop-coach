@@ -400,6 +400,69 @@ select {
   transform: translateY(-1px);
 }
 
+.upload-status {
+  color: var(--grow-g);
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.upload-status--error {
+  color: hsl(0, 80%, 40%);
+}
+
+.history-preview {
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  background: hsl(220, 20%, 98%);
+  padding: 1rem;
+}
+
+.history-preview__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.history-preview__table-wrap {
+  overflow-x: auto;
+}
+
+.history-preview table {
+  border-collapse: collapse;
+  min-width: 48rem;
+  width: 100%;
+}
+
+.history-preview th,
+.history-preview td {
+  border-bottom: 1px solid var(--card-border);
+  max-width: 14rem;
+  padding: 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.history-preview th {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.history-preview td {
+  color: var(--text-main);
+  font-size: 0.86rem;
+}
+
+.history-preview__note {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  margin: 0.75rem 0 0;
+}
+
 /* Grids */
 .context-grid,
 .calibration-grid,

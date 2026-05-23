@@ -90,12 +90,80 @@ class SessionContext(BaseModel):
     coach_calibration: CoachCalibration = Field(default_factory=CoachCalibration)
 
 
+class SessionHistoryEntry(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    source_date: str | None = Field(default=None, max_length=80)
+    teacher: str | None = Field(default=None, max_length=200)
+    school: str | None = Field(default=None, max_length=200)
+    coach: str | None = Field(default=None, max_length=200)
+    current_goal: str | None = Field(default=None, max_length=2000)
+    progress: str | None = Field(default=None, max_length=500)
+    teacher_reflection: str | None = Field(default=None, max_length=10000)
+    coach_reflection: str | None = Field(default=None, max_length=10000)
+    rag: str | None = Field(default=None, max_length=80)
+    ai_teacher_summary: str | None = Field(default=None, max_length=3000)
+    ai_coach_next_step: str | None = Field(default=None, max_length=3000)
+    raw_fields: dict[str, str] = Field(default_factory=dict, max_length=20)
+
+    @field_validator(
+        "source_date",
+        "teacher",
+        "school",
+        "coach",
+        "current_goal",
+        "progress",
+        "teacher_reflection",
+        "coach_reflection",
+        "rag",
+        "ai_teacher_summary",
+        "ai_coach_next_step",
+    )
+    @classmethod
+    def strip_optional_history_text(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        stripped = value.strip()
+        return stripped or None
+
+    @field_validator("raw_fields")
+    @classmethod
+    def strip_raw_fields(cls, value: dict[str, str]) -> dict[str, str]:
+        return {
+            key.strip()[:120]: raw_value.strip()[:2000]
+            for key, raw_value in value.items()
+            if key.strip() and raw_value.strip()
+        }
+
+    @model_validator(mode="after")
+    def require_at_least_one_history_field(self) -> "SessionHistoryEntry":
+        if not any(
+            [
+                self.source_date,
+                self.teacher,
+                self.school,
+                self.coach,
+                self.current_goal,
+                self.progress,
+                self.teacher_reflection,
+                self.coach_reflection,
+                self.rag,
+                self.ai_teacher_summary,
+                self.ai_coach_next_step,
+                self.raw_fields,
+            ]
+        ):
+            raise ValueError("Session history rows must contain at least one field.")
+        return self
+
+
 class CoachPrepGenerateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     teacher_reflection: str | None = Field(default=None, max_length=20000)
     lesson_or_context_notes: str | None = Field(default=None, max_length=20000)
     coach_notes: str | None = Field(default=None, max_length=20000)
+    session_history: list[SessionHistoryEntry] = Field(default_factory=list, max_length=50)
     session_context: SessionContext = Field(default_factory=SessionContext)
 
     @field_validator("teacher_reflection", "lesson_or_context_notes", "coach_notes")
@@ -110,10 +178,17 @@ class CoachPrepGenerateRequest(BaseModel):
 
     @model_validator(mode="after")
     def require_at_least_one_text_input(self) -> "CoachPrepGenerateRequest":
-        if not any([self.teacher_reflection, self.lesson_or_context_notes, self.coach_notes]):
+        if not any(
+            [
+                self.teacher_reflection,
+                self.lesson_or_context_notes,
+                self.coach_notes,
+                self.session_history,
+            ]
+        ):
             raise ValueError(
                 "At least one of teacher_reflection, lesson_or_context_notes, or coach_notes "
-                "must be provided."
+                "must be provided, or session_history must contain at least one row."
             )
         return self
 

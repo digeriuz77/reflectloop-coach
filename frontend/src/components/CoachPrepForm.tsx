@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-import type { CoachCalibration, CoachPrepRequest } from "../types/coachPrep";
+import type {
+  CoachCalibration,
+  CoachPrepRequest,
+  SessionHistoryEntry
+} from "../types/coachPrep";
 import { CalibrationSection } from "./CalibrationSection";
 import { Field } from "./Field";
 
@@ -9,7 +13,37 @@ type CoachPrepFormProps = {
   onSubmit: (request: CoachPrepRequest) => Promise<void>;
 };
 
+type SessionHistoryTextField = Exclude<keyof SessionHistoryEntry, "raw_fields">;
+
 const initialCalibration: CoachCalibration = {};
+const MAX_SESSION_HISTORY_ROWS = 50;
+
+const historyHeaderMap: Record<string, SessionHistoryTextField> = {
+  source_date: "source_date",
+  sourcedate: "source_date",
+  date: "source_date",
+  teacher: "teacher",
+  school: "school",
+  coach: "coach",
+  current_goal: "current_goal",
+  currentgoal: "current_goal",
+  goal: "current_goal",
+  progress: "progress",
+  teacher_reflection: "teacher_reflection",
+  teacherreflection: "teacher_reflection",
+  coach_reflection: "coach_reflection",
+  coachreflection: "coach_reflection",
+  coach_notes: "coach_reflection",
+  coachnotes: "coach_reflection",
+  rag: "rag",
+  ai_teacher_summary: "ai_teacher_summary",
+  aiteachersummary: "ai_teacher_summary",
+  teacher_summary: "ai_teacher_summary",
+  ai_coach_next_step: "ai_coach_next_step",
+  aicoachnextstep: "ai_coach_next_step",
+  coach_next_step: "ai_coach_next_step",
+  next_step: "ai_coach_next_step"
+};
 
 export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
   const [teacherReflection, setTeacherReflection] = useState("");
@@ -18,11 +52,16 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
   const [programmePhase, setProgrammePhase] = useState("");
   const [impactCycle, setImpactCycle] = useState("");
   const [currentGoal, setCurrentGoal] = useState("");
+  const [sessionHistory, setSessionHistory] = useState<SessionHistoryEntry[]>([]);
+  const [historyUploadMessage, setHistoryUploadMessage] = useState<string | null>(null);
   const [coachCalibration, setCoachCalibration] =
     useState<CoachCalibration>(initialCalibration);
 
-  const hasTextInput =
-    teacherReflection.trim() || lessonOrContextNotes.trim() || coachNotes.trim();
+  const hasGenerationInput =
+    teacherReflection.trim() ||
+    lessonOrContextNotes.trim() ||
+    coachNotes.trim() ||
+    sessionHistory.length > 0;
 
   // Load realistic pilot-aligned sample session data for the coach
   function handleLoadSampleData() {
@@ -38,6 +77,8 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
     setProgrammePhase("First Cycles");
     setImpactCycle("Cycle 1");
     setCurrentGoal("Increase student reasoning after questions using wait time");
+    setSessionHistory([]);
+    setHistoryUploadMessage(null);
     setCoachCalibration({
       implementation_pattern: "one_time_attempt",
       adaptation_pattern: "stopped_after_difficulty",
@@ -53,6 +94,34 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
     });
   }
 
+  async function handleHistoryUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const parsedRows = parseSessionHistory(text);
+      setSessionHistory(parsedRows.slice(0, MAX_SESSION_HISTORY_ROWS));
+      setHistoryUploadMessage(
+        parsedRows.length > MAX_SESSION_HISTORY_ROWS
+          ? `Loaded the first ${MAX_SESSION_HISTORY_ROWS} rows from ${file.name}.`
+          : `Loaded ${parsedRows.length} row${parsedRows.length === 1 ? "" : "s"} from ${file.name}.`
+      );
+    } catch (error) {
+      setSessionHistory([]);
+      setHistoryUploadMessage(error instanceof Error ? error.message : "Could not parse this file.");
+    } finally {
+      event.target.value = "";
+    }
+  }
+
+  function handleClearSessionHistory() {
+    setSessionHistory([]);
+    setHistoryUploadMessage(null);
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -60,6 +129,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
       teacher_reflection: teacherReflection,
       lesson_or_context_notes: lessonOrContextNotes,
       coach_notes: coachNotes,
+      session_history: sessionHistory.length ? sessionHistory : undefined,
       session_context: {
         programme_phase: programmePhase,
         impact_cycle: impactCycle,
@@ -134,6 +204,76 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
 
       <section className="panel">
         <div className="panel__header">
+          <h2>Session history CSV</h2>
+          <p>
+            Optional. Upload a CSV or tab-separated export with dated rows so the AI can look for
+            growth, changes, goal drift, and recurring coaching patterns during this session only.
+          </p>
+        </div>
+
+        <Field
+          label="Upload session history"
+          hint="Recognised headers include Source Date, Teacher, School, Coach, Current Goal, Progress, Teacher Reflection, Coach Reflection, RAG, AI Teacher Summary, and AI Coach Next Step."
+        >
+          <input
+            type="file"
+            accept=".csv,.tsv,text/csv,text/tab-separated-values"
+            onChange={handleHistoryUpload}
+          />
+        </Field>
+
+        {historyUploadMessage ? (
+          <p className={sessionHistory.length ? "upload-status" : "upload-status upload-status--error"}>
+            {historyUploadMessage}
+          </p>
+        ) : null}
+
+        {sessionHistory.length ? (
+          <div className="history-preview">
+            <div className="history-preview__header">
+              <strong>Parsed session history</strong>
+              <button type="button" className="copy-btn" onClick={handleClearSessionHistory}>
+                Clear
+              </button>
+            </div>
+            <div className="history-preview__table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Teacher</th>
+                    <th>Goal</th>
+                    <th>Progress</th>
+                    <th>Teacher reflection</th>
+                    <th>Coach reflection</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sessionHistory.slice(0, 5).map((row, index) => (
+                    <tr key={`${row.source_date ?? "row"}-${index}`}>
+                      <td>{row.source_date ?? "—"}</td>
+                      <td>{row.teacher ?? "—"}</td>
+                      <td>{row.current_goal ?? "—"}</td>
+                      <td>{row.progress ?? "—"}</td>
+                      <td>{row.teacher_reflection ?? "—"}</td>
+                      <td>{row.coach_reflection ?? "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {sessionHistory.length > 5 ? (
+              <p className="history-preview__note">
+                Showing 5 of {sessionHistory.length} parsed rows. All loaded rows will be sent for
+                this generation request.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+      </section>
+
+      <section className="panel">
+        <div className="panel__header">
           <h2>Session context</h2>
           <p>Optional context to help calibrate the coaching conversation.</p>
         </div>
@@ -168,7 +308,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
       <CalibrationSection value={coachCalibration} onChange={setCoachCalibration} />
 
       <div className="sticky-actions">
-        <button type="submit" disabled={isLoading || !hasTextInput}>
+        <button type="submit" disabled={isLoading || !hasGenerationInput}>
           {isLoading ? (
             <>
               <svg
@@ -197,8 +337,120 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
             "Generate coach prep"
           )}
         </button>
-        {!hasTextInput ? <span>Add at least one note field to continue.</span> : null}
+        {!hasGenerationInput ? <span>Add notes or upload session history to continue.</span> : null}
       </div>
     </form>
   );
+}
+
+function parseSessionHistory(text: string): SessionHistoryEntry[] {
+  const trimmed = text.trim();
+  if (!trimmed) {
+    throw new Error("The uploaded file is empty.");
+  }
+
+  const delimiter = detectDelimiter(trimmed);
+  const rows = parseDelimitedRows(trimmed, delimiter).filter((row) =>
+    row.some((cell) => cell.trim())
+  );
+  if (rows.length < 2) {
+    throw new Error("The uploaded file needs a header row and at least one data row.");
+  }
+
+  const headers = rows[0].map((header) => header.trim());
+  const parsedRows = rows
+    .slice(1)
+    .map((row) => mapHistoryRow(headers, row))
+    .filter((row): row is SessionHistoryEntry => row !== null);
+  if (!parsedRows.length) {
+    throw new Error("No usable session history rows were found.");
+  }
+
+  return parsedRows;
+}
+
+function detectDelimiter(text: string): "," | "\t" {
+  const firstLine = text.split(/\r?\n/, 1)[0] ?? "";
+  return (firstLine.match(/\t/g)?.length ?? 0) > (firstLine.match(/,/g)?.length ?? 0)
+    ? "\t"
+    : ",";
+}
+
+function parseDelimitedRows(text: string, delimiter: "," | "\t"): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const nextChar = text[index + 1];
+
+    if (char === '"') {
+      if (inQuotes && nextChar === '"') {
+        field += '"';
+        index += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === delimiter && !inQuotes) {
+      row.push(field.trim());
+      field = "";
+      continue;
+    }
+
+    if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (char === "\r" && nextChar === "\n") {
+        index += 1;
+      }
+      row.push(field.trim());
+      rows.push(row);
+      row = [];
+      field = "";
+      continue;
+    }
+
+    field += char;
+  }
+
+  row.push(field.trim());
+  rows.push(row);
+  return rows;
+}
+
+function mapHistoryRow(headers: string[], row: string[]): SessionHistoryEntry | null {
+  const entry: SessionHistoryEntry = {};
+  const rawFields: Record<string, string> = {};
+
+  headers.forEach((header, index) => {
+    const value = row[index]?.trim();
+    if (!value) {
+      return;
+    }
+
+    const mappedField = historyHeaderMap[normalizeHeader(header)];
+    if (mappedField) {
+      entry[mappedField] = value;
+    } else {
+      rawFields[header] = value;
+    }
+  });
+
+  if (Object.keys(rawFields).length) {
+    entry.raw_fields = rawFields;
+  }
+
+  return Object.keys(entry).length ? entry : null;
+}
+
+function normalizeHeader(header: string): string {
+  return header
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
 }

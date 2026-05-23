@@ -14,10 +14,26 @@ export type CoachCalibration = {
   calibration_notes?: string;
 };
 
+export type SessionHistoryEntry = {
+  source_date?: string;
+  teacher?: string;
+  school?: string;
+  coach?: string;
+  current_goal?: string;
+  progress?: string;
+  teacher_reflection?: string;
+  coach_reflection?: string;
+  rag?: string;
+  ai_teacher_summary?: string;
+  ai_coach_next_step?: string;
+  raw_fields?: Record<string, string>;
+};
+
 export type CoachPrepRequest = {
   teacher_reflection?: string;
   lesson_or_context_notes?: string;
   coach_notes?: string;
+  session_history?: SessionHistoryEntry[];
   session_context: {
     programme_phase?: string;
     impact_cycle?: string;

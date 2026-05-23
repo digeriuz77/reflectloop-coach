@@ -35,6 +35,7 @@ def _load_prompt_template() -> str:
 def _render_prompt(template: str, request: CoachPrepGenerateRequest) -> str:
     replacements = {
         "{{ session_context }}": request.session_context.model_dump_json(indent=2),
+        "{{ session_history }}": _render_session_history(request),
         "{{ teacher_reflection }}": request.teacher_reflection or "Not provided.",
         "{{ lesson_or_context_notes }}": request.lesson_or_context_notes or "Not provided.",
         "{{ coach_notes }}": request.coach_notes or "Not provided.",
@@ -46,6 +47,16 @@ def _render_prompt(template: str, request: CoachPrepGenerateRequest) -> str:
     for placeholder, value in replacements.items():
         rendered = rendered.replace(placeholder, value)
     return rendered
+
+
+def _render_session_history(request: CoachPrepGenerateRequest) -> str:
+    if not request.session_history:
+        return "Not provided."
+
+    return "\n".join(
+        f"Row {index + 1}: {entry.model_dump_json(exclude_none=True)}"
+        for index, entry in enumerate(request.session_history)
+    )
 
 
 def _validate_strategy_references(output: CoachPrepOutput) -> None:
