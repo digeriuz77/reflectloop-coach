@@ -40,6 +40,10 @@ Calibration signal rules:
 - If reflective depth is action-focused or surface/single-loop, make questions concrete and evidence-linked before challenging assumptions.
 - If reflective depth is assumption-aware or reframing/transfer, use more explicit assumption-testing and transfer questions.
 - Never output a calibration label as an appraisal. Translate calibration into coach-facing conversation guidance.
+- Anticipate likely teacher responses or barriers in a generous way, including practical constraints such as time pressure, curriculum coverage, pacing, student readiness, classroom confidence, or perceived slowness when evidence supports them.
+- For barrier prompts, help the coach respond gently with inquiry, evidence, and small experiments. Do not argue with or dismiss the teacher's concern.
+- When a teacher may say there is not enough time, help the coach explore which learning evidence matters most, what can be tried for a small portion of the lesson, and whether speed is being confused with learning.
+- When a teacher may say children are too slow or not ready, help the coach explore access, wait time, rehearsal, vocabulary, scaffolds, and what students' responses reveal about the task design.
 
 Return valid JSON only. Do not include markdown. Do not include commentary outside JSON.
 
@@ -77,6 +81,13 @@ Required JSON shape:
       "suggested_coach_bridge": "string"
     }
   ],
+  "anticipated_teacher_responses": [
+    {
+      "likely_teacher_response": "string",
+      "underlying_need_or_concern": "string",
+      "coach_prompt": "string"
+    }
+  ],
   "grow_conversation_guide": {
     "goal": ["string"],
     "reality": ["string"],
@@ -89,6 +100,7 @@ Required JSON shape:
 Output constraints:
 - Generate 3 to 5 double_loop_questions.
 - Generate no more than 3 grounded_strategies.
+- Generate 2 to 4 anticipated_teacher_responses.
 - Include at least one gentle challenge option so the coach can decide how strongly to challenge assumptions.
 - Questions should be addressed to the coach as candidate prompts they may choose to use, not as mandated teacher feedback.
 

@@ -55,6 +55,11 @@ export type CoachPrepOutput = {
     rationale: string;
     suggested_coach_bridge: string;
   }>;
+  anticipated_teacher_responses: Array<{
+    likely_teacher_response: string;
+    underlying_need_or_concern: string;
+    coach_prompt: string;
+  }>;
   grow_conversation_guide: {
     goal: string[];
     reality: string[];

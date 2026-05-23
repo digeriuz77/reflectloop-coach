@@ -165,6 +165,14 @@ class GroundedStrategy(BaseModel):
     suggested_coach_bridge: str = Field(..., min_length=1)
 
 
+class AnticipatedTeacherResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    likely_teacher_response: str = Field(..., min_length=1)
+    underlying_need_or_concern: str = Field(..., min_length=1)
+    coach_prompt: str = Field(..., min_length=1)
+
+
 class GrowConversationGuide(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -182,5 +190,8 @@ class CoachPrepOutput(BaseModel):
     reframe_suggestion: ReframeSuggestion
     double_loop_questions: list[DoubleLoopQuestion] = Field(..., min_length=3, max_length=5)
     grounded_strategies: list[GroundedStrategy] = Field(default_factory=list, max_length=3)
+    anticipated_teacher_responses: list[AnticipatedTeacherResponse] = Field(
+        ..., min_length=2, max_length=4
+    )
     grow_conversation_guide: GrowConversationGuide
     coach_confidence_flags: list[str] = Field(default_factory=list)

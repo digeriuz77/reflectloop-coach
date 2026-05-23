@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from app.api.coach_prep import get_coach_prep_service
 from app.main import app
 from app.models.coach_prep import (
+    AnticipatedTeacherResponse,
     CoachChallengeOptions,
     CoachPrepGenerateRequest,
     CoachPrepOutput,
@@ -65,6 +66,31 @@ class FakeCoachPrepService:
                     rationale="The teacher can make wait time explicit and structured.",
                     suggested_coach_bridge="Could we try this as a one-lesson experiment?",
                 )
+            ],
+            anticipated_teacher_responses=[
+                AnticipatedTeacherResponse(
+                    likely_teacher_response=(
+                        "There is not enough time to wait after every question."
+                    ),
+                    underlying_need_or_concern=(
+                        "The teacher is balancing pace and curriculum coverage."
+                    ),
+                    coach_prompt=(
+                        "Could we choose one hinge question where wait time is worth protecting "
+                        "and compare the quality of student thinking?"
+                    ),
+                ),
+                AnticipatedTeacherResponse(
+                    likely_teacher_response="Some pupils are too slow to answer.",
+                    underlying_need_or_concern=(
+                        "The teacher may need a scaffold that makes thinking visible before "
+                        "whole-class response."
+                    ),
+                    coach_prompt=(
+                        "What rehearsal or vocabulary support might help more pupils prepare an "
+                        "answer before you judge readiness?"
+                    ),
+                ),
             ],
             grow_conversation_guide=GrowConversationGuide(
                 goal=["Clarify whether the goal is more wait time or more student thinking."],

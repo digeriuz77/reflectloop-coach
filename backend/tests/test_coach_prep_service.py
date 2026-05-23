@@ -1,6 +1,7 @@
 import pytest
 
 from app.models.coach_prep import (
+    AnticipatedTeacherResponse,
     CoachChallengeOptions,
     CoachPrepGenerateRequest,
     CoachPrepOutput,
@@ -59,6 +60,26 @@ class InvalidStrategyLLMClient(BaseLLMClient):
                     rationale="This should be rejected.",
                     suggested_coach_bridge="Do not use this.",
                 )
+            ],
+            anticipated_teacher_responses=[
+                AnticipatedTeacherResponse(
+                    likely_teacher_response="There is not enough time.",
+                    underlying_need_or_concern="The teacher may be protecting lesson coverage.",
+                    coach_prompt=(
+                        "Which small part of the lesson could test whether slower talk improves "
+                        "learning evidence?"
+                    ),
+                ),
+                AnticipatedTeacherResponse(
+                    likely_teacher_response="The children are too slow.",
+                    underlying_need_or_concern=(
+                        "The teacher may need stronger scaffolds for thinking time."
+                    ),
+                    coach_prompt=(
+                        "What would help students rehearse an answer before you decide they are "
+                        "not ready?"
+                    ),
+                ),
             ],
             grow_conversation_guide=GrowConversationGuide(
                 goal=["Goal"],
