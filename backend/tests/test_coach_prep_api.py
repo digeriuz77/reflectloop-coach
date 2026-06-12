@@ -7,12 +7,16 @@ from app.models.coach_prep import (
     CoachChallengeOptions,
     CoachPrepGenerateRequest,
     CoachPrepOutput,
+    CoachPrepRefineRequest,
     DominantFrame,
     DoubleLoopQuestion,
     GroundedStrategy,
     GrowConversationGuide,
+    LensShiftPrompt,
     ReframeSuggestion,
     SessionSynthesis,
+    StudentImpactFocus,
+    TeacherValueHypothesis,
 )
 
 
@@ -60,6 +64,38 @@ class FakeCoachPrepService:
                     challenge_level="gentle",
                 ),
             ],
+            lens_shift_prompts=[
+                LensShiftPrompt(
+                    anticipated_statement="I tried the wait time and the lesson went well.",
+                    performative_pattern=(
+                        "Activity-listing without student learning evidence."
+                    ),
+                    affirmation_trap="That sounds great, you clearly worked hard on it.",
+                    pivot_prompt=(
+                        "What did students say or do after the pause that they could not "
+                        "do before, and what do you think made that possible?"
+                    ),
+                )
+            ],
+            teacher_values_hypotheses=[
+                TeacherValueHypothesis(
+                    value_hypothesis="Keeping pace may be valued as protecting coverage.",
+                    evidence=["Reflection links silence to lost time."],
+                    confidence="medium",
+                    discovery_question=(
+                        "When the lesson slows down, what feels most at risk for you?"
+                    ),
+                )
+            ],
+            student_impact_focus=StudentImpactFocus(
+                what_is_working_for_students=[
+                    "Two quieter students offered extended answers after the pause."
+                ],
+                what_may_be_driving_it=["Protected thinking time before responses."],
+                evidence_gaps=[
+                    "No evidence yet about reasoning quality across the whole class."
+                ],
+            ),
             grounded_strategies=[
                 GroundedStrategy(
                     strategy_id="wait_time_everyone_rehearses",
@@ -101,7 +137,14 @@ class FakeCoachPrepService:
             coach_confidence_flags=[
                 "Keep the conversation exploratory rather than evaluative."
             ],
+            coach_stance_flags=[
+                "The pre-brief leans toward affirming effort; consider one student-evidence "
+                "question early."
+            ],
         )
+
+    async def refine(self, request: CoachPrepRefineRequest) -> CoachPrepOutput:
+        return await self.generate(request.original_request)
 
 
 def override_service() -> FakeCoachPrepService:
@@ -256,6 +299,78 @@ def test_invalid_calibration_signal_is_rejected() -> None:
                     "implementation_pattern": "subjective_rating_4",
                 }
             },
+        },
+    )
+
+    app.dependency_overrides.clear()
+
+    assert response.status_code == 422
+
+
+def test_prebrief_only_request_is_accepted() -> None:
+    app.dependency_overrides[get_coach_prep_service] = override_service
+    client = TestClient(app)
+
+    response = client.post(
+        "/api/coach-prep/generate",
+        json={
+            "coach_prebrief": (
+                "She will want to talk about the group work she ran. I will be tempted to "
+                "praise the effort. I am not sure the quieter students learned anything new."
+            ),
+        },
+    )
+
+    app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body["lens_shift_prompts"]) >= 1
+    assert "student_impact_focus" in body
+
+
+def test_refine_coach_prep_returns_structured_output() -> None:
+    app.dependency_overrides[get_coach_prep_service] = override_service
+    client = TestClient(app)
+
+    generate_payload = {
+        "coach_prebrief": "She will describe the activities she ran this week.",
+        "coach_notes": "Teacher dominated the first 15 minutes despite the talk goal.",
+    }
+    previous_output = client.post("/api/coach-prep/generate", json=generate_payload).json()
+
+    response = client.post(
+        "/api/coach-prep/refine",
+        json={
+            "original_request": generate_payload,
+            "previous_output": previous_output,
+            "coach_reaction": (
+                "The values hypothesis is off; she is anxious about behaviour, not coverage. "
+                "Push deeper on the talk-balance contradiction."
+            ),
+        },
+    )
+
+    app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["grounded_strategies"][0]["strategy_id"] == "wait_time_everyone_rehearses"
+
+
+def test_refine_rejects_blank_coach_reaction() -> None:
+    app.dependency_overrides[get_coach_prep_service] = override_service
+    client = TestClient(app)
+
+    generate_payload = {"coach_notes": "Teacher dominated the first 15 minutes."}
+    previous_output = client.post("/api/coach-prep/generate", json=generate_payload).json()
+
+    response = client.post(
+        "/api/coach-prep/refine",
+        json={
+            "original_request": generate_payload,
+            "previous_output": previous_output,
+            "coach_reaction": "   ",
         },
     )
 

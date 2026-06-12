@@ -1,11 +1,16 @@
 from pathlib import Path
 
-from app.models.coach_prep import CoachPrepGenerateRequest, CoachPrepOutput
+from app.models.coach_prep import (
+    CoachPrepGenerateRequest,
+    CoachPrepOutput,
+    CoachPrepRefineRequest,
+)
 from app.services.coaching_rubrics import render_coaching_rubrics_summary
 from app.services.llm.base import BaseLLMClient
 from app.services.strategy_bank import get_strategy_ids, render_strategy_bank_summary
 
 PROMPT_PATH = Path(__file__).parents[1] / "prompts" / "coach_prep.md"
+REFINE_PROMPT_PATH = Path(__file__).parents[1] / "prompts" / "coach_prep_refine.md"
 
 
 class LLMOutputValidationError(RuntimeError):
@@ -27,13 +32,33 @@ class CoachPrepService:
         _validate_strategy_references(output)
         return output
 
+    async def refine(self, request: CoachPrepRefineRequest) -> CoachPrepOutput:
+        prompt = _load_prompt_template()
+        base_user_prompt = _render_prompt(prompt, request.original_request)
+        refine_block = _render_refine_block(request)
+        output = await self._llm_client.generate_structured_output(
+            system_prompt=prompt,
+            user_prompt=f"{base_user_prompt}\n\n{refine_block}",
+            output_schema=CoachPrepOutput,
+        )
+        _validate_strategy_references(output)
+        return output
+
 
 def _load_prompt_template() -> str:
     return PROMPT_PATH.read_text(encoding="utf-8")
 
 
+def _render_refine_block(request: CoachPrepRefineRequest) -> str:
+    template = REFINE_PROMPT_PATH.read_text(encoding="utf-8")
+    return template.replace(
+        "{{ previous_output }}", request.previous_output.model_dump_json(indent=2)
+    ).replace("{{ coach_reaction }}", request.coach_reaction)
+
+
 def _render_prompt(template: str, request: CoachPrepGenerateRequest) -> str:
     replacements = {
+        "{{ coach_prebrief }}": request.coach_prebrief or "Not provided.",
         "{{ session_context }}": request.session_context.model_dump_json(indent=2),
         "{{ session_history }}": _render_session_history(request),
         "{{ teacher_reflection }}": request.teacher_reflection or "Not provided.",

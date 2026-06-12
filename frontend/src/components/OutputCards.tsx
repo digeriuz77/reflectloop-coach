@@ -78,6 +78,17 @@ export function OutputCards({ output }: OutputCardsProps) {
     ].join("\n");
   }
 
+  function formatLensShiftText() {
+    if (!output.lens_shift_prompts?.length) return "No lens-shift prompts available.";
+    return [
+      "=== LENS-SHIFT PROMPTS (FROM PERFORMATIVE TO TRANSFORMATIVE) ===",
+      ...output.lens_shift_prompts.map(
+        (item, i) =>
+          `${i + 1}. Teacher will likely say: "${item.anticipated_statement}"\n   Pattern: ${item.performative_pattern}\n   The trap: ${item.affirmation_trap}\n   The pivot: "${item.pivot_prompt}"`
+      )
+    ].join("\n\n");
+  }
+
   return (
     <div className="output-stack" aria-live="polite">
       <div className="output-toolbar">
@@ -261,6 +272,32 @@ export function OutputCards({ output }: OutputCardsProps) {
             </div>
           </section>
 
+          {/* Lens-Shift Prompts Card */}
+          {output.lens_shift_prompts?.length ? (
+            <section className="panel">
+              <div className="panel__header">
+                <div className="card-header-actions">
+                  <div>
+                    <h2>Lens-shift prompts</h2>
+                    <p>
+                      Where the conversation may stay performative, and the pivot that moves it to
+                      student learning.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className={`copy-btn ${copiedId === "lens-shift" ? "copy-btn--copied" : ""}`}
+                    onClick={() => handleCopy(formatLensShiftText(), "lens-shift")}
+                    title="Copy lens-shift prompts to Clipboard"
+                  >
+                    {copiedId === "lens-shift" ? "Copied!" : "Copy Prompts"}
+                  </button>
+                </div>
+              </div>
+              <LensShiftCards prompts={output.lens_shift_prompts} />
+            </section>
+          ) : null}
+
           {/* Reframe Suggestion Card */}
           <section className="panel">
             <div className="panel__header">
@@ -337,6 +374,33 @@ export function OutputCards({ output }: OutputCardsProps) {
             </div>
           </section>
 
+          {/* Student Impact Focus Card */}
+          {output.student_impact_focus ? (
+            <section className="panel">
+              <div className="panel__header">
+                <h2>Student impact focus</h2>
+                <p>
+                  Anchoring the conversation in students: what is working, what may be driving it,
+                  and where the evidence is missing.
+                </p>
+              </div>
+              <div className="grow-grid">
+                <List
+                  title="What is working for students"
+                  items={output.student_impact_focus.what_is_working_for_students}
+                />
+                <List
+                  title="What may be driving it"
+                  items={output.student_impact_focus.what_may_be_driving_it}
+                />
+              </div>
+              <List
+                title="Evidence gaps to explore (claims without student evidence yet)"
+                items={output.student_impact_focus.evidence_gaps}
+              />
+            </section>
+          ) : null}
+
           {/* Dominant Frame Card */}
           <section className="panel">
             <div className="panel__header">
@@ -357,6 +421,20 @@ export function OutputCards({ output }: OutputCardsProps) {
             </div>
             <List title="Frame evidence notes" items={output.dominant_frame.evidence} />
           </section>
+
+          {/* Teacher Values Hypotheses Card */}
+          {output.teacher_values_hypotheses?.length ? (
+            <section className="panel">
+              <div className="panel__header">
+                <h2>Teacher values hypotheses</h2>
+                <p>
+                  Tentative, evidence-linked guesses at the values driving decisions, with a
+                  question that lets the teacher articulate the value themselves.
+                </p>
+              </div>
+              <TeacherValueCards hypotheses={output.teacher_values_hypotheses} />
+            </section>
+          ) : null}
 
           {/* Grounded Strategies Card */}
           <section className="panel">
@@ -397,20 +475,95 @@ export function OutputCards({ output }: OutputCardsProps) {
             </div>
           </section>
 
-          {/* Coach Confidence Flags */}
-          {output.coach_confidence_flags && output.coach_confidence_flags.length > 0 && (
+          {/* Coach Confidence & Stance Flags */}
+          {(output.coach_confidence_flags?.length || output.coach_stance_flags?.length) ? (
             <section className="panel">
               <div className="panel__header">
-                <h2>Coach confidence alerts</h2>
-                <p>System flags indicating limited context or potentially conflicting evidence.</p>
+                <h2>Coach considerations</h2>
+                <p>System flags indicating limited context, conflicting evidence, or optional stance reflections.</p>
               </div>
-              <List items={output.coach_confidence_flags} />
+              {output.coach_confidence_flags?.length ? (
+                <List title="Confidence alerts" items={output.coach_confidence_flags} />
+              ) : null}
+              {output.coach_stance_flags?.length ? (
+                <List
+                  title="Stance considerations (private, optional)"
+                  items={output.coach_stance_flags}
+                />
+              ) : null}
             </section>
-          )}
+          ) : null}
         </>
       )}
       </div>
       <PrintExportView output={output} />
+    </div>
+  );
+}
+
+function LensShiftCards({
+  prompts
+}: {
+  prompts: CoachPrepOutput["lens_shift_prompts"];
+}) {
+  if (!prompts || !prompts.length) {
+    return null;
+  }
+
+  return (
+    <div className="card-list">
+      {prompts.map((item, index) => (
+        <article className="mini-card" key={`${item.anticipated_statement}-${index}`} style={{ borderLeft: "4px solid var(--primary)" }}>
+          <span className="badge badge--amber">Likely teacher statement</span>
+          <h3 style={{ margin: "0.35rem 0 0.6rem", fontSize: "1.05rem" }}>
+            "{item.anticipated_statement}"
+          </h3>
+          <p style={{ margin: "0 0 0.6rem", fontSize: "0.9rem", color: "var(--text-muted)" }}>
+            <strong>Pattern:</strong> {item.performative_pattern}
+          </p>
+          <p style={{ margin: "0 0 0.85rem", fontSize: "0.9rem", color: "var(--text-muted)" }}>
+            <strong>The affirmation trap:</strong> "{item.affirmation_trap}"
+          </p>
+          <p style={{ margin: 0, color: "var(--text-main)", fontStyle: "italic" }}>
+            <strong>The pivot:</strong> "{item.pivot_prompt}"
+          </p>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function TeacherValueCards({
+  hypotheses
+}: {
+  hypotheses: CoachPrepOutput["teacher_values_hypotheses"];
+}) {
+  if (!hypotheses || !hypotheses.length) {
+    return null;
+  }
+
+  return (
+    <div className="card-list">
+      {hypotheses.map((item, index) => (
+        <article className="mini-card" key={`${item.value_hypothesis}-${index}`}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span className="badge">Possible driving value</span>
+            <span className={`badge ${
+              item.confidence === "high" ? "badge--emerald" :
+              item.confidence === "medium" ? "badge--amber" : "badge--purple"
+            }`} style={{ margin: 0 }}>
+              Confidence: {item.confidence}
+            </span>
+          </div>
+          <h3 style={{ margin: "0.5rem 0 0.75rem", fontSize: "1.05rem" }}>
+            {item.value_hypothesis}
+          </h3>
+          {item.evidence?.length ? <List title="Evidence" items={item.evidence} /> : null}
+          <p style={{ margin: "0.75rem 0 0", color: "var(--text-main)", fontStyle: "italic" }}>
+            <strong>Discovery question:</strong> "{item.discovery_question}"
+          </p>
+        </article>
+      ))}
     </div>
   );
 }
@@ -484,6 +637,19 @@ function PrintExportView({ output }: OutputCardsProps) {
         </div>
       </section>
 
+      {output.lens_shift_prompts?.length ? (
+        <section className="panel">
+          <div className="panel__header">
+            <h2>Lens-shift prompts</h2>
+            <p>
+              Where the conversation may stay performative, and the pivot that moves it to student
+              learning.
+            </p>
+          </div>
+          <LensShiftCards prompts={output.lens_shift_prompts} />
+        </section>
+      ) : null}
+
       <section className="panel">
         <div className="panel__header">
           <h2>Reframe suggestion</h2>
@@ -523,6 +689,40 @@ function PrintExportView({ output }: OutputCardsProps) {
           <List title="Key uncertainties & gaps" items={output.session_synthesis.uncertainties} />
         </div>
       </section>
+
+      {output.student_impact_focus ? (
+        <section className="panel">
+          <div className="panel__header">
+            <h2>Student impact focus</h2>
+            <p>
+              What is working for students, what may be driving it, and where the evidence is
+              missing.
+            </p>
+          </div>
+          <List
+            title="What is working for students"
+            items={output.student_impact_focus.what_is_working_for_students}
+          />
+          <List
+            title="What may be driving it"
+            items={output.student_impact_focus.what_may_be_driving_it}
+          />
+          <List
+            title="Evidence gaps to explore"
+            items={output.student_impact_focus.evidence_gaps}
+          />
+        </section>
+      ) : null}
+
+      {output.teacher_values_hypotheses?.length ? (
+        <section className="panel">
+          <div className="panel__header">
+            <h2>Teacher values hypotheses</h2>
+            <p>Tentative, evidence-linked guesses at the values driving decisions.</p>
+          </div>
+          <TeacherValueCards hypotheses={output.teacher_values_hypotheses} />
+        </section>
+      ) : null}
 
       <section className="panel">
         <div className="panel__header">
@@ -566,15 +766,23 @@ function PrintExportView({ output }: OutputCardsProps) {
         </div>
       </section>
 
-      {output.coach_confidence_flags && output.coach_confidence_flags.length > 0 && (
+      {(output.coach_confidence_flags?.length || output.coach_stance_flags?.length) ? (
         <section className="panel">
           <div className="panel__header">
-            <h2>Coach confidence alerts</h2>
-            <p>System flags indicating limited context or potentially conflicting evidence.</p>
+            <h2>Coach considerations</h2>
+            <p>System flags indicating limited context, conflicting evidence, or optional stance reflections.</p>
           </div>
-          <List items={output.coach_confidence_flags} />
+          {output.coach_confidence_flags?.length ? (
+            <List title="Confidence alerts" items={output.coach_confidence_flags} />
+          ) : null}
+          {output.coach_stance_flags?.length ? (
+            <List
+              title="Stance considerations (private, optional)"
+              items={output.coach_stance_flags}
+            />
+          ) : null}
         </section>
-      )}
+      ) : null}
     </div>
   );
 }

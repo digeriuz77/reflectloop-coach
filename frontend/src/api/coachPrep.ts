@@ -1,4 +1,8 @@
-import type { CoachPrepOutput, CoachPrepRequest } from "../types/coachPrep";
+import type {
+  CoachPrepOutput,
+  CoachPrepRefineRequest,
+  CoachPrepRequest
+} from "../types/coachPrep";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 const COACH_ACCESS_TOKEN_STORAGE_KEY = "reflectloop_coach_access_token";
@@ -19,10 +23,30 @@ export async function generateCoachPrep(
   request: CoachPrepRequest,
   coachAccessToken: string
 ): Promise<CoachPrepOutput> {
-  const response = await fetch(`${API_BASE_URL}/api/coach-prep/generate`, {
+  return postCoachPrep("/api/coach-prep/generate", removeEmptyValues(request), coachAccessToken);
+}
+
+export async function refineCoachPrep(
+  request: CoachPrepRefineRequest,
+  coachAccessToken: string
+): Promise<CoachPrepOutput> {
+  const payload = {
+    original_request: removeEmptyValues(request.original_request),
+    previous_output: request.previous_output,
+    coach_reaction: request.coach_reaction
+  };
+  return postCoachPrep("/api/coach-prep/refine", payload, coachAccessToken);
+}
+
+async function postCoachPrep(
+  path: string,
+  payload: unknown,
+  coachAccessToken: string
+): Promise<CoachPrepOutput> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     method: "POST",
     headers: buildHeaders(coachAccessToken),
-    body: JSON.stringify(removeEmptyValues(request))
+    body: JSON.stringify(payload)
   });
 
   if (!response.ok) {

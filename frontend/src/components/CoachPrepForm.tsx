@@ -45,7 +45,15 @@ const historyHeaderMap: Record<string, SessionHistoryTextField> = {
   next_step: "ai_coach_next_step"
 };
 
+const prebriefGuidingPrompts = [
+  "What do you expect the teacher will want to talk about?",
+  "What will you be tempted to affirm or praise?",
+  "What change in students do you think is (or is not) happening, and what is your evidence?",
+  "What might you be avoiding raising, and why?"
+];
+
 export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
+  const [coachPrebrief, setCoachPrebrief] = useState("");
   const [teacherReflection, setTeacherReflection] = useState("");
   const [lessonOrContextNotes, setLessonOrContextNotes] = useState("");
   const [coachNotes, setCoachNotes] = useState("");
@@ -58,6 +66,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
     useState<CoachCalibration>(initialCalibration);
 
   const hasGenerationInput =
+    coachPrebrief.trim() ||
     teacherReflection.trim() ||
     lessonOrContextNotes.trim() ||
     coachNotes.trim() ||
@@ -65,6 +74,9 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
 
   // Load realistic pilot-aligned sample session data for the coach
   function handleLoadSampleData() {
+    setCoachPrebrief(
+      "I expect she will walk me through everything she did this week: the wait-time attempts, the group work, the worksheet completion. I will be tempted to praise how hard she is working because she genuinely is. My honest hypothesis: two quieter students are starting to reason aloud when given time, but I have no evidence the rest of the class is thinking more deeply. I have been avoiding raising how much she talks in the first 15 minutes because she is anxious and the relationship is still building."
+    );
     setTeacherReflection(
       "I tried giving students 5 seconds of wait time after asking open questions in science today, rather than calling on the first hand that went up. It felt incredibly quiet and a bit awkward at first, but then two students who usually never speak raised their hands and gave really thorough, multi-sentence answers. However, I struggled to keep this up when the lesson pace felt rushed in the middle, and I reverted to calling on early volunteers."
     );
@@ -126,6 +138,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
     event.preventDefault();
 
     await onSubmit({
+      coach_prebrief: coachPrebrief,
       teacher_reflection: teacherReflection,
       lesson_or_context_notes: lessonOrContextNotes,
       coach_notes: coachNotes,
@@ -169,6 +182,33 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
             </button>
           </div>
           <p>Paste the coach-only preparation material. At least one note field is required.</p>
+        </div>
+
+        <div className="field">
+          <span className="field__label">Coach pre-brief</span>
+          <span className="field__hint">
+            Optional but powerful. Think aloud before the meeting; the AI uses this to spot
+            affirmation traps and build lens-shift prompts. Useful things to cover:
+          </span>
+          <ul
+            style={{
+              margin: 0,
+              paddingLeft: "1.2rem",
+              fontSize: "0.88rem",
+              color: "var(--text-muted)",
+              lineHeight: 1.55
+            }}
+          >
+            {prebriefGuidingPrompts.map((prompt) => (
+              <li key={prompt}>{prompt}</li>
+            ))}
+          </ul>
+          <textarea
+            value={coachPrebrief}
+            onChange={(event) => setCoachPrebrief(event.target.value)}
+            rows={6}
+            placeholder="e.g. She'll want to tell me about the group work. I'll be tempted to praise the effort. I think two quieter students are changing, but I have no whole-class evidence. I've been avoiding raising how much she talks early in the lesson..."
+          />
         </div>
 
         <Field label="Teacher reflection" hint="Optional. Use teacher-originated wording if available.">

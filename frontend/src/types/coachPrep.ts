@@ -30,6 +30,7 @@ export type SessionHistoryEntry = {
 };
 
 export type CoachPrepRequest = {
+  coach_prebrief?: string;
   teacher_reflection?: string;
   lesson_or_context_notes?: string;
   coach_notes?: string;
@@ -66,6 +67,23 @@ export type CoachPrepOutput = {
     purpose: string;
     challenge_level: "gentle" | "moderate" | "direct";
   }>;
+  lens_shift_prompts: Array<{
+    anticipated_statement: string;
+    performative_pattern: string;
+    affirmation_trap: string;
+    pivot_prompt: string;
+  }>;
+  teacher_values_hypotheses: Array<{
+    value_hypothesis: string;
+    evidence: string[];
+    confidence: "low" | "medium" | "high";
+    discovery_question: string;
+  }>;
+  student_impact_focus: {
+    what_is_working_for_students: string[];
+    what_may_be_driving_it: string[];
+    evidence_gaps: string[];
+  };
   grounded_strategies: Array<{
     strategy_id: string;
     rationale: string;
@@ -83,4 +101,11 @@ export type CoachPrepOutput = {
     will: string[];
   };
   coach_confidence_flags: string[];
+  coach_stance_flags: string[];
+};
+
+export type CoachPrepRefineRequest = {
+  original_request: CoachPrepRequest;
+  previous_output: CoachPrepOutput;
+  coach_reaction: string;
 };

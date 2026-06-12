@@ -160,13 +160,16 @@ class SessionHistoryEntry(BaseModel):
 class CoachPrepGenerateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    coach_prebrief: str | None = Field(default=None, max_length=20000)
     teacher_reflection: str | None = Field(default=None, max_length=20000)
     lesson_or_context_notes: str | None = Field(default=None, max_length=20000)
     coach_notes: str | None = Field(default=None, max_length=20000)
     session_history: list[SessionHistoryEntry] = Field(default_factory=list, max_length=50)
     session_context: SessionContext = Field(default_factory=SessionContext)
 
-    @field_validator("teacher_reflection", "lesson_or_context_notes", "coach_notes")
+    @field_validator(
+        "coach_prebrief", "teacher_reflection", "lesson_or_context_notes", "coach_notes"
+    )
     @classmethod
     def strip_optional_text(cls, value: str | None) -> str | None:
         if value is None:
@@ -180,6 +183,7 @@ class CoachPrepGenerateRequest(BaseModel):
     def require_at_least_one_text_input(self) -> "CoachPrepGenerateRequest":
         if not any(
             [
+                self.coach_prebrief,
                 self.teacher_reflection,
                 self.lesson_or_context_notes,
                 self.coach_notes,
@@ -187,8 +191,9 @@ class CoachPrepGenerateRequest(BaseModel):
             ]
         ):
             raise ValueError(
-                "At least one of teacher_reflection, lesson_or_context_notes, or coach_notes "
-                "must be provided, or session_history must contain at least one row."
+                "At least one of coach_prebrief, teacher_reflection, lesson_or_context_notes, "
+                "or coach_notes must be provided, or session_history must contain at least "
+                "one row."
             )
         return self
 
@@ -257,6 +262,32 @@ class GrowConversationGuide(BaseModel):
     will: list[str] = Field(..., min_length=1)
 
 
+class LensShiftPrompt(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    anticipated_statement: str = Field(..., min_length=1)
+    performative_pattern: str = Field(..., min_length=1)
+    affirmation_trap: str = Field(..., min_length=1)
+    pivot_prompt: str = Field(..., min_length=1)
+
+
+class TeacherValueHypothesis(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    value_hypothesis: str = Field(..., min_length=1)
+    evidence: list[str] = Field(default_factory=list)
+    confidence: Literal["low", "medium", "high"]
+    discovery_question: str = Field(..., min_length=1)
+
+
+class StudentImpactFocus(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    what_is_working_for_students: list[str] = Field(default_factory=list)
+    what_may_be_driving_it: list[str] = Field(default_factory=list)
+    evidence_gaps: list[str] = Field(default_factory=list)
+
+
 class CoachPrepOutput(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -264,9 +295,31 @@ class CoachPrepOutput(BaseModel):
     dominant_frame: DominantFrame
     reframe_suggestion: ReframeSuggestion
     double_loop_questions: list[DoubleLoopQuestion] = Field(..., min_length=3, max_length=5)
+    lens_shift_prompts: list[LensShiftPrompt] = Field(..., min_length=1, max_length=4)
+    teacher_values_hypotheses: list[TeacherValueHypothesis] = Field(
+        default_factory=list, max_length=3
+    )
+    student_impact_focus: StudentImpactFocus
     grounded_strategies: list[GroundedStrategy] = Field(default_factory=list, max_length=3)
     anticipated_teacher_responses: list[AnticipatedTeacherResponse] = Field(
         ..., min_length=2, max_length=4
     )
     grow_conversation_guide: GrowConversationGuide
     coach_confidence_flags: list[str] = Field(default_factory=list)
+    coach_stance_flags: list[str] = Field(default_factory=list)
+
+
+class CoachPrepRefineRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    original_request: CoachPrepGenerateRequest
+    previous_output: CoachPrepOutput
+    coach_reaction: str = Field(..., min_length=1, max_length=5000)
+
+    @field_validator("coach_reaction")
+    @classmethod
+    def strip_coach_reaction(cls, value: str) -> str:
+        stripped = value.strip()
+        if not stripped:
+            raise ValueError("Coach reaction must not be blank.")
+        return stripped

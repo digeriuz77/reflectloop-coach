@@ -5,13 +5,37 @@ from app.models.coach_prep import (
     CoachChallengeOptions,
     CoachPrepGenerateRequest,
     CoachPrepOutput,
+    CoachPrepRefineRequest,
     DominantFrame,
     DoubleLoopQuestion,
     GroundedStrategy,
     GrowConversationGuide,
+    LensShiftPrompt,
     ReframeSuggestion,
     SessionSynthesis,
+    StudentImpactFocus,
 )
+
+
+def _required_new_sections() -> dict:
+    return {
+        "lens_shift_prompts": [
+            LensShiftPrompt(
+                anticipated_statement="I ran the activities as planned.",
+                performative_pattern="Activity-listing without student evidence.",
+                affirmation_trap="That sounds like a lot of hard work.",
+                pivot_prompt=(
+                    "What changed for students during those activities, and what do you "
+                    "think drove that change?"
+                ),
+            )
+        ],
+        "student_impact_focus": StudentImpactFocus(
+            what_is_working_for_students=["A quieter student gave an extended answer."],
+            what_may_be_driving_it=["Protected thinking time."],
+            evidence_gaps=["Reasoning quality across the class is unknown."],
+        ),
+    }
 from app.services.coach_prep_service import CoachPrepService, LLMOutputValidationError
 from app.services.llm.base import BaseLLMClient
 
@@ -61,6 +85,7 @@ class InvalidStrategyLLMClient(BaseLLMClient):
                     suggested_coach_bridge="Do not use this.",
                 )
             ],
+            **_required_new_sections(),
             anticipated_teacher_responses=[
                 AnticipatedTeacherResponse(
                     likely_teacher_response="There is not enough time.",
@@ -139,6 +164,7 @@ class CapturingLLMClient(BaseLLMClient):
                     suggested_coach_bridge="Bridge.",
                 )
             ],
+            **_required_new_sections(),
             anticipated_teacher_responses=[
                 AnticipatedTeacherResponse(
                     likely_teacher_response="There is not enough time.",
@@ -205,3 +231,47 @@ async def test_service_includes_session_history_in_prompt() -> None:
     assert "5/21/2026" in llm_client.user_prompt
     assert "Progressing" in llm_client.user_prompt
     assert "dialogic talk prompts" in llm_client.user_prompt
+
+
+@pytest.mark.asyncio
+async def test_service_includes_coach_prebrief_in_prompt() -> None:
+    llm_client = CapturingLLMClient()
+    service = CoachPrepService(llm_client)
+
+    await service.generate(
+        CoachPrepGenerateRequest(
+            coach_prebrief=(
+                "She will want to talk about the group work. I will be tempted to praise "
+                "the effort rather than ask what the quieter students learned."
+            ),
+        )
+    )
+
+    assert "Coach pre-brief" in llm_client.user_prompt
+    assert "tempted to praise" in llm_client.user_prompt
+
+
+@pytest.mark.asyncio
+async def test_refine_includes_previous_output_and_reaction_in_prompt() -> None:
+    llm_client = CapturingLLMClient()
+    service = CoachPrepService(llm_client)
+
+    original_request = CoachPrepGenerateRequest(
+        coach_notes="Teacher dominated the first 15 minutes despite the talk goal.",
+    )
+    previous_output = await service.generate(original_request)
+
+    await service.refine(
+        CoachPrepRefineRequest(
+            original_request=original_request,
+            previous_output=previous_output,
+            coach_reaction=(
+                "The values hypothesis is off; push deeper on the talk-balance contradiction."
+            ),
+        )
+    )
+
+    assert "Refinement task:" in llm_client.user_prompt
+    assert "A longitudinal synthesis." in llm_client.user_prompt
+    assert "push deeper on the talk-balance contradiction" in llm_client.user_prompt
+    assert "Teacher dominated the first 15 minutes" in llm_client.user_prompt
