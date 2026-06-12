@@ -6,6 +6,7 @@ import type {
   SessionHistoryEntry
 } from "../types/coachPrep";
 import { CalibrationSection } from "./CalibrationSection";
+import { Collapsible } from "./Collapsible";
 import { Field } from "./Field";
 
 type CoachPrepFormProps = {
@@ -71,6 +72,14 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
     lessonOrContextNotes.trim() ||
     coachNotes.trim() ||
     sessionHistory.length > 0;
+
+  const contextFieldCount = [programmePhase, impactCycle, currentGoal].filter((value) =>
+    value.trim()
+  ).length;
+  const contextSummary = contextFieldCount ? `${contextFieldCount} set` : null;
+  const historySummary = sessionHistory.length
+    ? `${sessionHistory.length} row${sessionHistory.length === 1 ? "" : "s"}`
+    : null;
 
   // Load realistic pilot-aligned sample session data for the coach
   function handleLoadSampleData() {
@@ -154,198 +163,217 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
 
   return (
     <form className="form-stack" onSubmit={handleSubmit}>
-      <section className="panel">
-        <div className="panel__header">
-          <div className="form-actions-header">
-            <h2>Session inputs</h2>
-            <button
-              type="button"
-              className="demo-btn"
-              onClick={handleLoadSampleData}
-              title="Click to load a high-fidelity science classroom wait-time coaching scenario"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                <line x1="12" y1="22.08" x2="12" y2="12" />
-              </svg>
-              Load Demo Session
-            </button>
+      {/* Step 1 — Pre-brief (primary entry point) */}
+      <section className="panel panel--accent">
+        <div className="step-header">
+          <span className="step-badge">1</span>
+          <div className="step-header__text">
+            <h2>Start here: your pre-brief</h2>
+            <p>
+              Think aloud before the meeting. This is the most powerful input — the AI uses it to
+              spot affirmation traps and build your lens-shift prompts.
+            </p>
           </div>
-          <p>Paste the coach-only preparation material. At least one note field is required.</p>
+          <button
+            type="button"
+            className="demo-btn"
+            onClick={handleLoadSampleData}
+            title="Load a worked example: a science wait-time coaching scenario"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+              <line x1="12" y1="22.08" x2="12" y2="12" />
+            </svg>
+            Load demo
+          </button>
         </div>
 
-        <div className="field">
-          <span className="field__label">Coach pre-brief</span>
-          <span className="field__hint">
-            Optional but powerful. Think aloud before the meeting; the AI uses this to spot
-            affirmation traps and build lens-shift prompts. Useful things to cover:
-          </span>
-          <ul
-            style={{
-              margin: 0,
-              paddingLeft: "1.2rem",
-              fontSize: "0.88rem",
-              color: "var(--text-muted)",
-              lineHeight: 1.55
-            }}
-          >
+        <div className="prebrief-prompts">
+          <span className="prebrief-prompts__label">Useful things to cover:</span>
+          <ul>
             {prebriefGuidingPrompts.map((prompt) => (
               <li key={prompt}>{prompt}</li>
             ))}
           </ul>
-          <textarea
-            value={coachPrebrief}
-            onChange={(event) => setCoachPrebrief(event.target.value)}
-            rows={6}
-            placeholder="e.g. She'll want to tell me about the group work. I'll be tempted to praise the effort. I think two quieter students are changing, but I have no whole-class evidence. I've been avoiding raising how much she talks early in the lesson..."
-          />
         </div>
 
-        <Field label="Teacher reflection" hint="Optional. Use teacher-originated wording if available.">
+        <textarea
+          value={coachPrebrief}
+          onChange={(event) => setCoachPrebrief(event.target.value)}
+          rows={7}
+          placeholder="e.g. She'll want to tell me about the group work. I'll be tempted to praise the effort. I think two quieter students are changing, but I have no whole-class evidence. I've been avoiding raising how much she talks early in the lesson..."
+        />
+      </section>
+
+      {/* Step 2 — Evidence (open, clearly optional) */}
+      <section className="panel">
+        <div className="step-header">
+          <span className="step-badge">2</span>
+          <div className="step-header__text">
+            <h2>Add any evidence you have</h2>
+            <p>Optional. Add whatever you already have — one field is plenty. Leave the rest blank.</p>
+          </div>
+        </div>
+
+        <Field label="Teacher reflection" hint="Use the teacher's own wording if you have it.">
           <textarea
             value={teacherReflection}
             onChange={(event) => setTeacherReflection(event.target.value)}
-            rows={6}
+            rows={5}
             placeholder="e.g. What did the teacher think went well? What did they notice about student response?"
           />
         </Field>
 
         <Field
           label="Lesson or context notes"
-          hint="Optional. This can include informal observation details; no source metadata required for P0."
+          hint="Informal observation details are fine; no formal record needed."
         >
           <textarea
             value={lessonOrContextNotes}
             onChange={(event) => setLessonOrContextNotes(event.target.value)}
-            rows={6}
+            rows={5}
             placeholder="e.g. Classroom observation details, timeline of wait-time execution, student engagement levels..."
           />
         </Field>
 
-        <Field label="Coach notes" hint="Optional. Private coach-facing notes only.">
+        <Field label="Coach notes" hint="Private coach-facing notes only.">
           <textarea
             value={coachNotes}
             onChange={(event) => setCoachNotes(event.target.value)}
-            rows={6}
+            rows={5}
             placeholder="e.g. Private notes on teacher assumptions, coaching strategy hypotheses, relationship barriers..."
           />
         </Field>
       </section>
 
-      <section className="panel">
-        <div className="panel__header">
-          <h2>Session history CSV</h2>
-          <p>
-            Optional. Upload a CSV or tab-separated export with dated rows so the AI can look for
-            growth, changes, goal drift, and recurring coaching patterns during this session only.
-          </p>
+      {/* Step 3 — Advanced (collapsed, but clearly present and interactive) */}
+      <section className="advanced-section">
+        <div className="advanced-section__header">
+          <div className="step-header__text">
+            <h2>Sharpen the output (optional)</h2>
+            <p>
+              Click any section below to expand it. None are required, but each gives the AI more to
+              work with — context, history over time, and evidence calibration.
+            </p>
+          </div>
         </div>
 
-        <Field
-          label="Upload session history"
-          hint="Recognised headers include Source Date, Teacher, School, Coach, Current Goal, Progress, Teacher Reflection, Coach Reflection, RAG, AI Teacher Summary, and AI Coach Next Step."
-        >
-          <input
-            type="file"
-            accept=".csv,.tsv,text/csv,text/tab-separated-values"
-            onChange={handleHistoryUpload}
-          />
-        </Field>
+        <div className="advanced-stack">
+          <Collapsible
+            title="Session context"
+            subtitle="Programme phase, impact cycle, current goal"
+            summary={contextSummary}
+          >
+            <div className="context-grid">
+              <Field label="Programme phase">
+                <input
+                  value={programmePhase}
+                  onChange={(event) => setProgrammePhase(event.target.value)}
+                  placeholder="e.g. First Cycles"
+                />
+              </Field>
 
-        {historyUploadMessage ? (
-          <p className={sessionHistory.length ? "upload-status" : "upload-status upload-status--error"}>
-            {historyUploadMessage}
-          </p>
-        ) : null}
+              <Field label="Impact cycle">
+                <input
+                  value={impactCycle}
+                  onChange={(event) => setImpactCycle(event.target.value)}
+                  placeholder="e.g. Cycle 1"
+                />
+              </Field>
 
-        {sessionHistory.length ? (
-          <div className="history-preview">
-            <div className="history-preview__header">
-              <strong>Parsed session history</strong>
-              <button type="button" className="copy-btn" onClick={handleClearSessionHistory}>
-                Clear
-              </button>
+              <Field label="Current goal">
+                <input
+                  value={currentGoal}
+                  onChange={(event) => setCurrentGoal(event.target.value)}
+                  placeholder="e.g. Increase student reasoning after questions"
+                />
+              </Field>
             </div>
-            <div className="history-preview__table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Teacher</th>
-                    <th>Goal</th>
-                    <th>Progress</th>
-                    <th>Teacher reflection</th>
-                    <th>Coach reflection</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sessionHistory.slice(0, 5).map((row, index) => (
-                    <tr key={`${row.source_date ?? "row"}-${index}`}>
-                      <td>{row.source_date ?? "—"}</td>
-                      <td>{row.teacher ?? "—"}</td>
-                      <td>{row.current_goal ?? "—"}</td>
-                      <td>{row.progress ?? "—"}</td>
-                      <td>{row.teacher_reflection ?? "—"}</td>
-                      <td>{row.coach_reflection ?? "—"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {sessionHistory.length > 5 ? (
-              <p className="history-preview__note">
-                Showing 5 of {sessionHistory.length} parsed rows. All loaded rows will be sent for
-                this generation request.
+          </Collapsible>
+
+          <Collapsible
+            title="Session history"
+            subtitle="Upload past sessions so the AI can track change and goal drift"
+            summary={historySummary}
+          >
+            <Field
+              label="Upload session history (CSV or TSV)"
+              hint="Recognised headers include Source Date, Teacher, School, Coach, Current Goal, Progress, Teacher Reflection, Coach Reflection, RAG, AI Teacher Summary, and AI Coach Next Step."
+            >
+              <input
+                type="file"
+                accept=".csv,.tsv,text/csv,text/tab-separated-values"
+                onChange={handleHistoryUpload}
+              />
+            </Field>
+
+            {historyUploadMessage ? (
+              <p
+                className={
+                  sessionHistory.length ? "upload-status" : "upload-status upload-status--error"
+                }
+              >
+                {historyUploadMessage}
               </p>
             ) : null}
-          </div>
-        ) : null}
-      </section>
 
-      <section className="panel">
-        <div className="panel__header">
-          <h2>Session context</h2>
-          <p>Optional context to help calibrate the coaching conversation.</p>
+            {sessionHistory.length ? (
+              <div className="history-preview">
+                <div className="history-preview__header">
+                  <strong>Parsed session history</strong>
+                  <button type="button" className="copy-btn" onClick={handleClearSessionHistory}>
+                    Clear
+                  </button>
+                </div>
+                <div className="history-preview__table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Teacher</th>
+                        <th>Goal</th>
+                        <th>Progress</th>
+                        <th>Teacher reflection</th>
+                        <th>Coach reflection</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sessionHistory.slice(0, 5).map((row, index) => (
+                        <tr key={`${row.source_date ?? "row"}-${index}`}>
+                          <td>{row.source_date ?? "—"}</td>
+                          <td>{row.teacher ?? "—"}</td>
+                          <td>{row.current_goal ?? "—"}</td>
+                          <td>{row.progress ?? "—"}</td>
+                          <td>{row.teacher_reflection ?? "—"}</td>
+                          <td>{row.coach_reflection ?? "—"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {sessionHistory.length > 5 ? (
+                  <p className="history-preview__note">
+                    Showing 5 of {sessionHistory.length} parsed rows. All loaded rows will be sent
+                    for this generation request.
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+          </Collapsible>
+
+          <CalibrationSection value={coachCalibration} onChange={setCoachCalibration} />
         </div>
-
-        <div className="context-grid">
-          <Field label="Programme phase">
-            <input
-              value={programmePhase}
-              onChange={(event) => setProgrammePhase(event.target.value)}
-              placeholder="e.g. First Cycles"
-            />
-          </Field>
-
-          <Field label="Impact cycle">
-            <input
-              value={impactCycle}
-              onChange={(event) => setImpactCycle(event.target.value)}
-              placeholder="e.g. Cycle 1"
-            />
-          </Field>
-
-          <Field label="Current goal">
-            <input
-              value={currentGoal}
-              onChange={(event) => setCurrentGoal(event.target.value)}
-              placeholder="e.g. Increase student reasoning after questions"
-            />
-          </Field>
-        </div>
       </section>
-
-      <CalibrationSection value={coachCalibration} onChange={setCoachCalibration} />
 
       <div className="sticky-actions">
         <button type="submit" disabled={isLoading || !hasGenerationInput}>
@@ -371,13 +399,15 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
                 <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
                 <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
               </svg>
-              Generating Prep...
+              Generating prep...
             </>
           ) : (
             "Generate coach prep"
           )}
         </button>
-        {!hasGenerationInput ? <span>Add notes or upload session history to continue.</span> : null}
+        {!hasGenerationInput ? (
+          <span>Add a pre-brief or any notes above to continue.</span>
+        ) : null}
       </div>
     </form>
   );
