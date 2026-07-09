@@ -55,6 +55,17 @@ async function postCoachPrep(
       const body = (await response.json()) as { detail?: unknown };
       if (typeof body.detail === "string") {
         detail = body.detail;
+      } else if (Array.isArray(body.detail)) {
+        detail = body.detail
+          .map((err: any) => {
+            const locPath = Array.isArray(err.loc) 
+              ? err.loc.filter((loc: any) => loc !== "body").join(".") 
+              : "";
+            return `${locPath ? locPath + ": " : ""}${err.msg}`;
+          })
+          .join("; ");
+      } else if (body.detail && typeof body.detail === "object") {
+        detail = JSON.stringify(body.detail);
       }
     } catch {
       detail = `Coach prep generation failed with status ${response.status}.`;
@@ -78,15 +89,19 @@ function buildHeaders(coachAccessToken: string): HeadersInit {
 }
 
 function removeEmptyValues<T>(value: T): T {
+  if (typeof value === "string") {
+    return value.trim() as unknown as T;
+  }
+
   if (Array.isArray(value)) {
-    return value.map(removeEmptyValues) as T;
+    return value.map(removeEmptyValues) as unknown as T;
   }
 
   if (value && typeof value === "object") {
     const cleaned = Object.fromEntries(
       Object.entries(value)
-        .filter(([, nestedValue]) => nestedValue !== "" && nestedValue !== undefined)
         .map(([key, nestedValue]) => [key, removeEmptyValues(nestedValue)])
+        .filter(([, nestedValue]) => nestedValue !== "" && nestedValue !== undefined)
     );
     return cleaned as T;
   }
