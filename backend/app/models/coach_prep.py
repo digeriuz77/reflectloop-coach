@@ -78,7 +78,7 @@ class CoachCalibration(BaseModel):
         "reframing_and_transfer",
         "unknown",
     ] | None = None
-    calibration_notes: str | None = Field(default=None, max_length=1000)
+    calibration_notes: str | None = Field(default=None, max_length=3000)
 
 
 class SessionContext(BaseModel):

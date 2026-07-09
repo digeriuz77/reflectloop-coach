@@ -218,7 +218,7 @@ export function CalibrationSection({ value, onChange }: CalibrationSectionProps)
           label="Calibration notes"
           hint={
             value.calibration_notes 
-              ? `Optional private coach note. (${value.calibration_notes.length}/1000 characters)`
+              ? `Optional private coach note. (${value.calibration_notes.length}/3000 characters)`
               : "Optional private coach note about uncertainty, context, or relationship dynamics."
           }
         >
@@ -226,7 +226,7 @@ export function CalibrationSection({ value, onChange }: CalibrationSectionProps)
             value={value.calibration_notes ?? ""}
             onChange={(event) => updateField("calibration_notes", event.target.value)}
             rows={3}
-            maxLength={1000}
+            maxLength={3000}
             placeholder="e.g. Note any specific dialogic evidence gaps or concerns about teacher defensive postures..."
           />
         </Field>
