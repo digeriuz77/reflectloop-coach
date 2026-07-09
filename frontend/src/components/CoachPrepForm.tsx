@@ -211,6 +211,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
           value={coachPrebrief}
           onChange={(event) => setCoachPrebrief(event.target.value)}
           rows={7}
+          maxLength={20000}
           placeholder="e.g. She'll want to tell me about the group work. I'll be tempted to praise the effort. I think two quieter students are changing, but I have no whole-class evidence. I've been avoiding raising how much she talks early in the lesson..."
         />
       </section>
@@ -230,6 +231,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
             value={teacherReflection}
             onChange={(event) => setTeacherReflection(event.target.value)}
             rows={5}
+            maxLength={20000}
             placeholder="e.g. What did the teacher think went well? What did they notice about student response?"
           />
         </Field>
@@ -242,6 +244,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
             value={lessonOrContextNotes}
             onChange={(event) => setLessonOrContextNotes(event.target.value)}
             rows={5}
+            maxLength={20000}
             placeholder="e.g. Classroom observation details, timeline of wait-time execution, student engagement levels..."
           />
         </Field>
@@ -251,6 +254,7 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
             value={coachNotes}
             onChange={(event) => setCoachNotes(event.target.value)}
             rows={5}
+            maxLength={20000}
             placeholder="e.g. Private notes on teacher assumptions, coaching strategy hypotheses, relationship barriers..."
           />
         </Field>
@@ -275,26 +279,38 @@ export function CoachPrepForm({ isLoading, onSubmit }: CoachPrepFormProps) {
             summary={contextSummary}
           >
             <div className="context-grid">
-              <Field label="Programme phase">
+              <Field 
+                label="Programme phase"
+                hint={programmePhase ? `${programmePhase.length}/120 characters` : "e.g. First Cycles"}
+              >
                 <input
                   value={programmePhase}
                   onChange={(event) => setProgrammePhase(event.target.value)}
+                  maxLength={120}
                   placeholder="e.g. First Cycles"
                 />
               </Field>
 
-              <Field label="Impact cycle">
+              <Field 
+                label="Impact cycle"
+                hint={impactCycle ? `${impactCycle.length}/120 characters` : "e.g. Cycle 1"}
+              >
                 <input
                   value={impactCycle}
                   onChange={(event) => setImpactCycle(event.target.value)}
+                  maxLength={120}
                   placeholder="e.g. Cycle 1"
                 />
               </Field>
 
-              <Field label="Current goal">
+              <Field 
+                label="Current goal"
+                hint={currentGoal ? `${currentGoal.length}/500 characters` : "e.g. Increase student reasoning"}
+              >
                 <input
                   value={currentGoal}
                   onChange={(event) => setCurrentGoal(event.target.value)}
+                  maxLength={500}
                   placeholder="e.g. Increase student reasoning after questions"
                 />
               </Field>
